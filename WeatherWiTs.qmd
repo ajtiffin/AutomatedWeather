@@ -1,0 +1,101 @@
+---
+format: 
+    typst:
+        mainfont: "Arial"
+        fontsize: 9pt
+        fig-format: png
+        include-before-body:
+             text: |
+                #show heading: set text(rgb(0,72,151))
+---
+```{r}
+#| label: R Title calculations
+#| echo: false
+#| warning: false
+#| output: false
+title.date<-format(as.Date(Sys.Date()), "%b %d, %Y")
+title<-paste0("AFR Automated Weekly Financial \"Weather Report\"")
+date<-paste0("Printed on: ", title.date)
+```
+
+```{r}
+#| label: Generate Charts
+#| echo: false
+#| warning: false
+#| output: false
+
+# source("WeatherChartsNew.R")
+```
+```{r}
+#| label: Generate AI text 
+#| echo: false
+#| warning: false
+#| output: false
+ 
+# source("WeatherCode.R")
+load("weathertext.rdta")
+```
+
+```{=typst}
+#h(-.7cm)
+#box(
+  fill: rgb(0,72,151),
+  width: 0.7fr,
+  inset: 10pt,
+  radius: 2pt,
+    )[
+    #text(size: 1.5em, fill: white, weight: "extrabold")[`r title`]\ 
+    #text(size: .8em, fill: white)[`r date`]
+]
+#v(.2em)
+```
+
+### Main Events for the Week 
+```{=typst}
+#line(length: 100%, stroke: .5pt+black)
+```
+::: {layout="[[1.5,6.5]]"}
+```{=typst}
+#align(right+horizon)[#emph[`r summary_sq`]] // the section blurb
+```
+`r summary`
+:::
+::: {layout="[[1.5,6.5]]"}
+```{=typst}
+#align(right+horizon)[#emph[`r summary2_sq`]] // the section blurb
+```
+`r summary2`
+:::
+
+![](weeklycharts.png)
+
+### Capital Flows 
+```{=typst}
+#line(length: 100%, stroke: .5pt+black)
+```
+::: {layout="[[1.5,6.5]]"}
+```{=typst}
+#align(right)[#emph[`r capital_sq`]] // the section blurb
+```
+```{=typst}
+#grid(
+  columns: 2,
+  gutter: 1em,
+  image("capflows.png", width: 2in),
+  image("tab1.png", width: 2in)
+)
+```
+:::
+{{<pagebreak>}}
+
+### Sovereign Spreads
+```{=typst}
+#line(length: 100%, stroke: .5pt+black)
+```
+![](panela.png)
+
+### Exchange Rates
+```{=typst}
+#line(length: 100%, stroke: .5pt+black)
+```
+![](panelb.png)
