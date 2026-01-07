@@ -1,0 +1,52 @@
+---
+font-family: "Arial"
+font-size: 9pt
+format:
+  typst:
+    margin:
+      x: 2cm
+      y: 2.5cm
+    papersize: a4
+---
+
+```{=typst}
+#set text(font: "Arial", size: 9pt)
+#set par(justify: true, leading: 0.65em)
+#set block(spacing: 0.5em)
+#align(center)[
+  #text(size: 14pt, weight: "bold")[SACU Trade Developments - Weekly Briefing]
+  #v(0.3em)
+  #text(size: 10pt)[January 06, 2026]
+]
+#v(1em)
+
+#let wit(data) = {
+  table(
+    columns: (25%, 75%),
+    stroke: (x, y) => (
+      top: if y == 0 { 1.5pt } else { 0.5pt + gray },
+      bottom: 0.5pt + gray,
+      left: none,
+      right: none,
+    ),
+    inset: (x: 10pt, y: 8pt),
+    align: (left, left),
+    ..data.map(row => (strong(row.at(0)), row.at(1))).flatten()
+  )
+}
+
+#wit((
+  ("SACU Reform Emerges as 2026 Priority", "South Africa is actively pushing for Southern African Customs Union reform to enhance its trade flexibility and bilateral negotiation capacity. The debate centers on balancing South Africa's need for agile trade agreements with neighboring states' development concerns, positioning SACU restructuring as a major discussion point for 2026. 2."),
+  ("Customs Union Opacity Blocks Trade Partners", "Potential trading partners view SACU as opaque and unpredictable, making them reluctant to engage with the union rather than South Africa directly. This perception creates a significant barrier to trade expansion, particularly with Middle Eastern and Asian markets that represent the fastest-growing economies globally. 3."),
+  ("Member States Deploy Protectionist Measures", "SACU member states, including Botswana and Namibia, impose non-tariff barriers such as vegetable import bans against other member countries without legitimate health or disease justifications. These protectionist practices undermine the customs union's foundational purpose and contradict its rules. 4."),
+  ("Consultation Process Slows Trade Negotiations", "South Africa must consult with Botswana, Eswatini, Lesotho, and Namibia on all trade matters, a process that was historically workable but now constrains rapid bilateral agreement-making in an accelerated global trade environment. The current system cannot accommodate the speed required for modern trade negotiations. 5."),
+  ("Asia-Middle East Market Expansion Blocked", "South Africa faces barriers to deepening penetration in fast-growing Asian and Middle Eastern markets due to SACU constraints, despite recent celebratory export protocols. The region remains underexploited compared to existing African, American, EU, and UK market access. 6."),
+  ("Regional Development Support Preservation Critical", "Any SACU reform must preserve development programmes that provide essential social support to neighboring states to avoid regional destabilization. South Africa would ultimately suffer economic consequences if neighboring economies collapsed due to reform adjustments. 7."),
+  ("AfCFTA Partnership Gains Momentum", "The African Union and UAE reaffirmed commitment to the African Continental Free Trade Area (AfCFTA) as a mutually reinforcing strategic priority alongside peace and security initiatives. Both parties recognized expanded trade and investment as contributors to stability and sustainable development across Africa. 8."),
+  ("Tariff Amendment Implementation Begins", "South Africa's customs authority implemented draft amendments to the Customs and Excise Act effective January 1, 2026, including new tariff subheadings for mineral wool and beverage cans to facilitate competitive market monitoring within SACU. 9."),
+  ("Rules of Origin Self-Certification Advancing", "The EU-WCO Rules of Origin Africa Programme steering committee examined 2025 impact and is preparing implementation of origin self-certification across Africa. This initiative aims to strengthen intra-African trade and trade between Africa and external regions. 10."),
+  ("Strategic Recalibration Defines Regional Relations", "Southern African regional cooperation in 2026 is characterized by pragmatism and strategic recalibration, with emphasis on balancing individual country interests against collective development objectives. This shift reflects broader repositioning of regional trade and diplomatic priorities.")
+))
+```
+
+*Sources: wandile.substack.com, dailymaverick.co.za, wandilesihlobo.com, sars.gov.za, freightnews.co.za, au.int, southernafricantimes.com*

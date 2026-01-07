@@ -1,0 +1,134 @@
+---
+font-family: "Arial"
+font-size: 9pt
+format:
+  typst:
+    margin:
+      x: 2cm
+      y: 2.5cm
+    papersize: a4
+---
+
+```{=typst}
+#set text(font: "Arial", size: 9pt)
+#set par(justify: true, leading: 0.65em)
+#set block(spacing: 0.5em)
+#align(center)[
+  #text(size: 14pt, weight: "bold")[SACU Reform and Trade Policy Developments]
+  #v(0.3em)
+  #text(size: 10pt)[Summary of Key Trade Policy Discussions and Administrative Updates]
+  #v(0.2em)
+  #text(size: 9pt)[#datetime.today().display()]
+]
+#v(1em)
+```
+
+# Executive Summary
+
+This report analyzes recent developments in Southern African Customs Union (SACU) trade policy, focusing on growing calls for institutional reform driven by South Africa's need for greater trade flexibility. The discussion centers on balancing regional integration benefits with individual member state trade autonomy.
+
+# Key Policy Debates
+
+```{=typst}
+#let wit(data) = {
+  table(
+    columns: (25%, 75%),
+    stroke: (x, y) => (
+      top: if y == 0 { 1.5pt } else { 0.5pt + gray },
+      bottom: 0.5pt + gray,
+      left: none,
+      right: none,
+    ),
+    inset: (x: 10pt, y: 10pt),
+    align: (right, left),
+    ..data.flatten()
+  )
+}
+
+#wit((
+  [*SACU reform urgency*],
+  [High-profile commentary argues that SACU appears opaque and unpredictable to potential trading partners who are primarily interested in South Africa rather than the wider region. The requirement for South Africa to consult Botswana, Eswatini, Lesotho, and Namibia on trade deals is seen as slowing negotiations and potentially deterring agreements.],
+
+  [*Proposed modernization*],
+  [The suggested "modern" approach would allow SACU members to retain low internal tariffs while negotiating bilateral trade agreements individually. This would give South Africa more agility in trade negotiations while attempting to preserve regional development support mechanisms.],
+
+  [*Trade flexibility rationale*],
+  [Proponents argue that South Africa faces pressures in key markets such as the United States and needs faster export-market diversification. The current SACU-wide consultation process is viewed as misaligned with the urgency of South Africa's trade expansion needs.],
+))
+```
+
+\
+
+# Internal Trade Barriers
+
+```{=typst}
+#wit((
+  [*Intra-SACU protectionism*],
+  [Recurring import bans on South African vegetables by Botswana and Namibia are highlighted as examples where SACU members "do not follow the rules," creating non-tariff barriers within a customs union designed to guarantee free movement of goods.],
+
+  [*Policy justifications*],
+  [These measures are framed domestically as food-security and farmer-protection tools by the implementing countries. However, critics characterize them as protectionist when imposed without genuine animal or plant health risks.],
+
+  [*Growing friction*],
+  [This intra-SACU tension is presented as a key factor driving questions in South Africa about whether the current SACU arrangement serves its best trade interests. This debate is expected to intensify through 2026.],
+))
+```
+
+\
+
+# Financial and Development Implications
+
+```{=typst}
+#wit((
+  [*Revenue-sharing generosity*],
+  [South Africa's fiscal transfers to SACU partners through the revenue-sharing formula represent significant, often "unrecognised generosity," effectively providing regional development finance through customs revenue redistribution.],
+
+  [*Proposed transition*],
+  [Reform advocates suggest gradually shifting from the existing revenue-sharing model toward a more explicit development-finance mechanism, with greater participation from multilateral development institutions and other partners.],
+
+  [*Regional stability concerns*],
+  [The political economy challenge involves South Africa prioritizing its trade interests while carefully managing adjustment costs for neighbors, given potential regional spillovers from abrupt SACU changes.],
+))
+```
+
+\
+
+# Technical Administrative Updates
+
+```{=typst}
+#wit((
+  [*Customs schedule amendments*],
+  [South Africa's revenue authority (SARS) circulated draft amendments to customs schedules effective January 1, 2026, including creation of a new 8-digit tariff subheading for glass wool to improve monitoring of mineral-wool imports in the SACU market.],
+
+  [*Anti-dumping review*],
+  [A sunset review of anti-dumping duties on stranded wire is underway, with public comments due in early January 2026. This process affects producers and importers operating within SACU's common external tariff framework.],
+
+  [*Administrative integration*],
+  [These technical changes represent ongoing fine-tuning of SACU's common external tariff and trade-remedy regime, administered through South African institutions on behalf of the entire customs union.],
+))
+```
+
+\
+
+# Strategic Context and Outlook
+
+```{=typst}
+#wit((
+  [*Global competitiveness*],
+  [The core narrative emphasizes that as global trade conditions become more volatile and competitive, South Africa requires greater speed and autonomy in negotiating market access while SACU partners prioritize stability and continued fiscal support.],
+
+  [*Institutional design questions*],
+  [Current discourse focuses less on new signed agreements and more on whether SACU's institutional design is fit for purpose for the next phase of South Africa-led regional and global trade integration.],
+
+  [*Policy alignment challenges*],
+  [The tension reflects broader challenges in balancing South Africa's individual trade ambitions with collective regional integration commitments, particularly regarding the pace and scope of international trade negotiations.],
+))
+```
+
+---
+
+## Key Takeaways
+
+This analysis reveals a critical juncture for SACU, with South Africa seeking greater trade policy flexibility while maintaining regional partnerships. The debate reflects broader tensions between national trade autonomy and customs union obligations, with significant implications for regional economic integration and development finance mechanisms.
+
+The technical administrative updates demonstrate continued operational integration even as political discussions about institutional reform intensify, suggesting a complex transition period ahead for SACU's future structure and function.

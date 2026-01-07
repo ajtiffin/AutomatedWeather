@@ -1,0 +1,135 @@
+---
+font-family: "Arial"
+font-size: 9pt
+format:
+  typst:
+    margin:
+      x: 2cm
+      y: 2.5cm
+    papersize: a4
+---
+
+```{=typst}
+// Set document-wide font and size
+#set text(font: "Arial", size: 9pt)
+#set par(justify: true, leading: 0.65em)
+
+// Compact title block
+#set block(spacing: 0.5em)
+#align(center)[
+  #text(size: 14pt, weight: "bold")[SACU Economic Update: End-2025 Review]
+  #v(0.3em)
+  #text(size: 10pt)[South African Customs Union Economic Developments]
+  #v(0.3em)
+  #text(size: 9pt)[Economic Analysis Team]
+  #v(0.2em)
+  #text(size: 9pt)[#datetime.today().display()]
+]
+#v(1em)
+```
+
+# Executive Summary
+
+South Africa dominated SACU economic news through end-2025, with mixed signals across key sectors. While business activity contracted and structural trade tensions persisted, significant improvements emerged in power supply, agricultural exports, and tourism recovery, alongside continued digital payment modernization.
+
+# Economic Performance and Outlook
+
+```{=typst}
+#let wit(data) = {
+  table(
+    columns: (25%, 75%),
+    stroke: (x, y) => (
+      top: if y == 0 { 1.5pt } else { 0.5pt + gray },
+      bottom: 0.5pt + gray,
+      left: none,
+      right: none,
+    ),
+    inset: (x: 10pt, y: 10pt),
+    align: (right, left),
+    ..data.flatten()
+  )
+}
+
+#wit((
+  [*Business activity contraction*],
+  [South Africa's PMI fell to 47.7 in December from 49.0 in November, marking its weakest performance in 11 months. This signals contraction in private-sector business activity amid softer domestic and export demand, with falling new orders indicating continued economic headwinds.],
+
+  [*Employment resilience*],
+  [Despite weak overall activity, firms marginally increased employment for a third consecutive month, suggesting some underlying labor market stability. Input price pressures also eased, supported by rand strength against the US dollar.],
+
+  [*Currency strength*],
+  [The rand finished 2025 approximately 13% stronger against the US dollar, marking its best annual gain in 16 years. This currency appreciation helped moderate inflationary pressures and supported improved business confidence in certain sectors.],
+))
+```
+
+\
+
+# Power Sector Transformation
+
+```{=typst}
+#wit((
+  [*Load shedding elimination*],
+  [Eskom reported 231 consecutive days without load shedding in 2025, representing a dramatic improvement in power supply reliability. This achievement reflects improved maintenance practices and operational efficiency gains at the state utility.],
+
+  [*Energy availability gains*],
+  [Improved maintenance lifted Eskom's energy availability to approximately 69%, providing more consistent power supply for industrial and commercial activities across South Africa and indirectly benefiting SACU partners through improved regional connectivity.],
+
+  [*Financial recovery*],
+  [Eskom projected a net profit of roughly ZAR 16 billion for FY2025/26 following strong interim earnings and reduced debt levels. This financial turnaround supports long-term power sector sustainability and regional energy security.],
+))
+```
+
+\
+
+# Agricultural Performance and Regional Spillovers
+
+```{=typst}
+#wit((
+  [*Mixed sector recovery*],
+  [South Africa's agriculture ended 2025 in "mixed recovery" with strong crops and La Niña-supported rainfall lifting overall output and exports, while recurring foot-and-mouth disease heavily impacted the livestock subsector, particularly cattle farming.],
+
+  [*Export growth momentum*],
+  [Agricultural exports reached approximately USD 11.7 billion in the first three quarters of 2025, up around 10% year-over-year. Full-year exports were expected to exceed 2024's USD 13.7 billion and possibly surpass USD 14 billion, supporting SACU-wide agricultural value chains.],
+
+  [*Regional integration benefits*],
+  [Strong farm conditions in South Africa mirrored favorable rains across Southern Africa, supporting grazing and crop prospects into 2026. This underpins rural incomes and cross-border food trade throughout SACU, demonstrating deep agricultural linkages within the customs union.],
+))
+```
+
+\
+
+# Trade Policy and Integration Challenges
+
+```{=typst}
+#wit((
+  [*Reform pressures*],
+  [South African policy commentary renewed calls for either SACU reform or potential exit to gain greater trade policy flexibility. Critics argue that SACU's current structure deters partners from deeper bilateral engagement with South Africa, limiting strategic trade opportunities.],
+
+  [*Non-tariff barriers*],
+  [Internal trade tensions persist, with Botswana and Namibia's import bans on some South African vegetables cited as rule-breaking behavior that undermines customs union coherence and complicates regional agri-food trade integration.],
+
+  [*Facilitation initiatives*],
+  [Official SACU processes focused on enhancing trade facilitation and industrialization through automotive and mineral-beneficiation task teams, plus an Authorized Economic Operator pilot program. These initiatives predate current reform debates but provide framework for addressing structural challenges.],
+))
+```
+
+\
+
+# Tourism Recovery and Digital Innovation
+
+```{=typst}
+#wit((
+  [*Tourism growth trajectory*],
+  [South Africa's visitor numbers ran approximately 18% higher year-to-date (January-October) compared to 2024, positioning the country to exceed 8.92 million arrivals recorded in 2024. This supports services exports and employment while reinforcing regional integration through cross-border travel.],
+
+  [*Digital payments transformation*],
+  [Card-based payments were projected to surpass ZAR 2.9 trillion by 2025, driven by wider merchant acceptance, contactless technology, and mobile-led solutions. This digitalization enhances financial inclusion and reduces transaction frictions, particularly relevant for cross-border SACU commerce.],
+
+  [*Infrastructure investment signals*],
+  [Agricultural machinery sales exceeded 7,100 tractors and 200 combine harvesters in the first 11 months of 2025, indicating continued investment in primary production capacity with likely spillover demand for inputs and services from SACU neighbors.],
+))
+```
+
+---
+
+**Note:** This analysis is based on economic developments through end-2025, with data drawn from multiple sources including S&P Global, Eskom reports, agricultural sector analyses, and tourism statistics. The report highlights both opportunities and challenges facing the Southern African Customs Union as it navigates evolving economic conditions.

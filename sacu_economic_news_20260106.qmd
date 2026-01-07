@@ -1,0 +1,48 @@
+---
+font-family: "Arial"
+font-size: 9pt
+format:
+  typst:
+    margin:
+      x: 2cm
+      y: 2.5cm
+    papersize: a4
+---
+
+```{=typst}
+#set text(font: "Arial", size: 9pt)
+#set par(justify: true, leading: 0.65em)
+#set block(spacing: 0.5em)
+#align(center)[
+  #text(size: 14pt, weight: "bold")[Today's Top Economic News Stories From Sacu Countr - South Africa]
+  #v(0.3em)
+  #text(size: 10pt)[January 06, 2026]
+]
+#v(1em)
+
+#let wit(data) = {
+  table(
+    columns: (22%, 78%),
+    stroke: (x, y) => (
+      top: if y == 0 { 1.5pt } else { 0.5pt + gray },
+      bottom: 0.5pt + gray,
+      left: none,
+      right: none,
+    ),
+    inset: (col, row) => if col == 0 { (left: 0pt, right: 1.5em, top: 8pt, bottom: 8pt) } else { (left: 0.5em, right: 0pt, top: 8pt, bottom: 8pt) },
+    table.header(
+      [*Category*], [*Details*]
+    ),
+    ..data.map(row => (strong(row.at(0)), row.at(1))).flatten()
+  )
+}
+
+#wit((
+  (": South Africa should advocate for Southern African Cus", "Botswana GDP Outlook"),
+  (": Botswana's economy faces contraction of 1% in 2025 pe", "South Africa Manganese Hit"),
+  (": South32, a major manganese exporter from South Africa", "India-South Africa Trade Talks"),
+  (": Discussions in a recent India-South Africa Joint Work", "Agriculture Export Calls: South Africa urged to prioritize exports to Asia and Middle East, review SACU constraints on trade deals, and address biosecurity and land reforms for inclusive agribusiness growth amid low market penetration.")
+))
+```
+
+*Sources: businessweekly.co.bw, sundayworld.co.za, dailymaverick.co.za, ddnews.gov.in, wineland.co.za, freightnews.co.za, africanfarming.com, indianexpress.com*
