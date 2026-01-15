@@ -130,11 +130,11 @@ bbiextract<-function(var.list, field, start, end, frq){
 }
 
 # AFR-specific groups-------------------------------
-
-weo.codes<-imf_datatools$ecos_sdmx_utilities$get_weo_country_codes() %>% janitor::clean_names()
+weo.codes<-haven::read_dta("\\\\data1\\WEO\\WEO_Stata_Databases\\weo groups\\3. WEO Country Group Composition.dta")
+# weo.codes<-imf_datatools$ecos_sdmx_utilities$get_weo_country_codes() |> janitor::clean_names() # broken link
 ssa.list<-weo.codes %>%
-  filter(sub_sahara_africa==1) %>% pull(iso_3_code)
-
+  rename(iso3c=countrycode) |> 
+  filter(groupcode=="G603") %>% pull(iso3c)
 
 # Spreads Data -----------------------------------------------------------
 

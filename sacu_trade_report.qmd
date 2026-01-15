@@ -1,0 +1,52 @@
+---
+font-family: "Arial"
+font-size: 9pt
+format:
+  typst:
+    margin:
+      x: 2cm
+      y: 2.5cm
+    papersize: a4
+---
+
+```{=typst}
+#set text(font: "Arial", size: 9pt)
+#set par(justify: true, leading: 0.65em)
+#set block(spacing: 0.5em)
+#align(center)[
+  #text(size: 14pt, weight: "bold")[SACU Trade Developments - Weekly Briefing]
+  #v(0.3em)
+  #text(size: 10pt)[January 14, 2026]
+]
+#v(1em)
+
+#let wit(data) = {
+  table(
+    columns: (25%, 75%),
+    stroke: (x, y) => (
+      top: if y == 0 { 1.5pt } else { 0.5pt + gray },
+      bottom: 0.5pt + gray,
+      left: none,
+      right: none,
+    ),
+    inset: (x: 10pt, y: 8pt),
+    align: (left, left),
+    ..data.map(row => (strong(row.at(0)), row.at(1))).flatten()
+  )
+}
+
+#wit((
+  ("SACU Reform Push Intensifies", "SUMMARY: South Africa is urged to push for SACU reforms to gain trade flexibility amid global changes, as the customs union appears opaque to partners. Issues include non-tariff barriers like Botswana and Namibia's vegetable import bans from South Africa, seen as protectionism. A comprehensive review is needed for bilateral deals without regional consultation."),
+  ("EU Delists South Africa from High-Risk", "SUMMARY: The EU decided on January 9, 2026, to remove South Africa from its high-risk jurisdictions list, effective January 29, easing due diligence for trade and payments. This follows FATF greylist exit in October 2025 and includes other African nations like Nigeria. It supports smoother cross-border transactions for SACU-related travel and investment."),
+  ("AGOA Extension Passes US House", "SUMMARY: On January 14, 2026, the African Union welcomed the US House's passage of a three-year AGOA extension, urging Senate approval. AGOA boosts US-Africa trade, industrialization, and jobs; SACU members like South Africa benefit as key beneficiaries. It reinforces regional value chains and economic ties."),
+  ("SACU Vegetable Import Disputes", "SUMMARY: Botswana and Namibia continue banning South African vegetable imports to protect local farmers, creating non-tariff barriers within SACU. This violates customs union spirit without health risks, prompting calls for better coordination. South Africa seeks reform to address such protectionism."),
+  ("South Africa Eyes 2026 Trade Reforms", "SUMMARY: Entering 2026, South Africa focuses on turning 2025 logistics gains into reforms, including AfCFTA exports over $1.3 billion via EMIA. SACU aligns with SADC/AfCFTA for Africa trade hub status, emphasizing rail/port private participation. Momentum targets OECD-level efficiency."),
+  ("Economist Calls SACU Review Overdue", "SUMMARY: On January 9, 2026, economist Wandile Sihlobo stated SACU review is overdue due to partner reluctance from its opacity. South Africa must prioritize interests in fast-changing trade, while maintaining neighbor support programs. Past consultations slow bilateral agility."),
+  ("Market Pressures Drive SA SACU Reform", "SUMMARY: Tightening global trade, US protectionism, and compliance needs renew South Africa's SACU reform push for agility. This allows quicker bilateral agreements amid urgency, unlike slow past processes. Preserves development aid to smaller members."),
+  ("AfCFTA Gains Highlight SACU Context", "SUMMARY: South Africa's AfCFTA exports surged in 2025, tying into SACU's regional role. Nestlé imported reduced-tariff goods from South Africa, signaling value chains. 2026 tariff phase-downs for textiles/auto sectors could boost SACU manufacturing integration."),
+  ("Non-Tariff Barriers Harm SACU Unity", "SUMMARY: SACU rule non-compliance, like import bans, creates barriers and protectionism. Effective coordination is urged over unilateral actions for food security. Reform ensures flexibility without undermining union benefits."),
+  ("Global Trade Shifts Pressure SACU", "SUMMARY: Changing world requires SACU members to prioritize national interests; South Africa leads reform calls. Aligns with AfCFTA/SADC for larger market access, but opacity deters partners focused on SA alone. Builds on 2025 logistics progress.")
+))
+```
+
+*Sources: zawya.com, crown.co.za, ethicalbusiness.africa, au.int, atta.travel, freightnews.co.za, times.co.sz*

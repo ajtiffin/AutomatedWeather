@@ -1,0 +1,52 @@
+---
+font-family: "Arial"
+font-size: 9pt
+format:
+  typst:
+    margin:
+      x: 2cm
+      y: 2.5cm
+    papersize: a4
+---
+
+```{=typst}
+#set text(font: "Arial", size: 9pt)
+#set par(justify: true, leading: 0.65em)
+#set block(spacing: 0.5em)
+#align(center)[
+  #text(size: 14pt, weight: "bold")[Keeping Track of the Competition - Weekly Briefing]
+  #v(0.3em)
+  #text(size: 10pt)[January 14, 2026]
+]
+#v(1em)
+
+#let wit(data) = {
+  table(
+    columns: (25%, 75%),
+    stroke: (x, y) => (
+      top: if y == 0 { 1.5pt } else { 0.5pt + gray },
+      bottom: 0.5pt + gray,
+      left: none,
+      right: none,
+    ),
+    inset: (x: 10pt, y: 8pt),
+    align: (left, left),
+    ..data.map(row => (strong(row.at(0)), row.at(1))).flatten()
+  )
+}
+
+#wit((
+  ("IMF SDN on AI and future skills", "Institution: IMF. Title: Bridging Skill Gaps for the Future: New Jobs Creation in the AI Age. Date: 9 January 2026 (IMF SDN 2026/001; highlighted on IMF site 14 January 2026). This Staff Discussion Note analyzes how demand and supply of IT and AI-related skills are reshaping labor markets, showing that about one in ten vacancies in advanced economies now requires at least one “new” skill, with AI skills associated with higher wages but also reduced employment in occupations highly exposed and weakly complementary to AI. Policy recommendations stress differentiated strategies: education and reskilling where AI-skill demand is strong, versus policies to boost firms’ innovation and access to credit where AI-skill supply is abundant but underused. 2."),
+  ("IMF web feature on AI and work", "Institution: IMF. Title: New Skills and AI Are Reshaping the Future of Work (web/feature article linking to the SDN). Date: 14 January 2026 (listed on IMF homepage). This communication piece distills the AI-focused findings of the SDN, emphasizing that diffusion of AI skills raises wages but can depress employment in AI-exposed, low-complementarity occupations, especially affecting youth, and that AI-driven “skill churn” risks widening labor-market polarization. It highlights the main policy takeaway that countries must proactively adapt education, training, and labor-market institutions so AI adoption supports inclusive growth rather than hollowing out the middle class. 3."),
+  ("IMF SDN launch as AI-focused event", "Institution: IMF. Title: (Seminar/event around) Bridging Skill Gaps for the Future: New Jobs Creation in the AI Age. Date: Week of 9–14 January 2026 (staff discussion notes are typically launched with a dedicated seminar; the SDN and homepage feature indicate an associated event in this window). The event centers on the AI transformation of labor markets, discussing empirical evidence from online vacancies and wages on how AI-related skills diffuse across countries and sectors. Policy discussion focuses on how governments and international financial institutions should redesign skills, education, and innovation policies to manage AI-driven reallocation of jobs and avoid deepening regional and income divides. 4."),
+  ("No new IMF AI press releases", "Institution: IMF. Title: (None – negative finding for AI-specific press releases in the past 7 days). Date: Coverage for 7–13 January 2026. A scan of IMF’s recent news and press releases shows no AI-centered press release or statement in the last week; references to AI are absent or only incidental in macroeconomic or country surveillance items. This indicates that, over this period, the IMF’s substantive AI output is concentrated in the SDN and its associated communication, rather than in new AI-focused policy announcements. 5."),
+  ("No IMF AI blog posts this week", "Institution: IMF. Title: (None – negative finding for AI-focused blogs in the past 7 days). Date: Coverage for 7–13 January 2026. IMF’s visible blogs and Finance & Development pieces listed around this period focus on broader macro, trade, and fiscal themes, without new posts devoted centrally to artificial intelligence. Any mentions of AI in these outlets are tangential and do not meet the criterion of being genuinely AI-focused analytical or policy pieces. 6."),
+  ("World Bank: no AI reports this week", "Institution: World Bank Group. Title: (None – no AI-centered reports/working papers identified in past 7 days). Date: Coverage for 7–13 January 2026. Recent World Bank publications in this window concentrate on macro prospects, climate, and country-specific development issues; AI, when mentioned, appears only as a secondary technological factor rather than the main subject. There is therefore no clearly AI-focused World Bank report or working paper comparable in scope to the IMF SDN during this week. 7."),
+  ("World Bank: no AI-focused events this week", "Institution: World Bank Group. Title: (None – no seminars/events with substantive AI content in past 7 days). Date: Coverage for 7–13 January 2026. The Bank’s public event calendars during this period highlight topics such as debt, climate, and inclusive growth, with no advertised seminars where AI or machine learning are the central theme. Any AI references in general digital innovation or technology sessions are too peripheral to qualify as genuinely AI-focused. 8."),
+  ("OECD: no new AI policy outputs", "Institution: OECD. Title: (None – no new AI-centered reports, briefs, or blogs in past 7 days). Date: Coverage for 7–13 January 2026. The OECD maintains extensive work on AI (e.g., AI principles and AI policy observatory), but over the last week there are no newly dated, AI-specific publications or blogs; new outputs focus on taxation, trade, and green transition rather than AI as such. Any AI mentions within these are incidental and do not meet the user’s threshold. 9."),
+  ("OECD: no AI-specific events this week", "Institution: OECD. Title: (None – no AI-focused seminars/events in past 7 days). Date: Coverage for 7–13 January 2026. OECD’s event listings for this period are dominated by meetings on climate, productivity, and education, without newly scheduled or held events where AI is the central subject of discussion. Existing AI-related fora (e.g., AI policy observatory meetings) do not show new sessions falling within this 7‑day window. 10."),
+  ("BIS: no fresh AI work in last week", "Institution: BIS. Title: (None – no new AI-focused BIS papers, speeches, or events in past 7 days). Date: Coverage for 7–13 January 2026. Although BIS has an established body of work on AI and machine learning in finance, its recent publications and speech archives in this time frame concern monetary policy, financial stability, and payments, with no newly released material centered on AI. Any passing references to AI in these items are not substantial enough to be classified as genuinely AI-focused outputs.")
+))
+```
+
+*Sources: news.un.org, imf.org, policyedge.in*

@@ -32,7 +32,8 @@ date<-paste0("Printed on: ", title.date)
 #| warning: false
 #| output: false
  
-# source("WeatherCode.R")
+source("WeatherCode.R")
+# source("ImprovedWeatherText.R")
 load("weathertext.rdta")
 ```
 

@@ -1,0 +1,83 @@
+---
+format: 
+    typst:
+        mainfont: "Arial"
+        fontsize: 9pt
+        fig-format: png
+        include-before-body:
+             text: |
+                #show heading: set text(rgb(0,72,151))
+---
+```{r}
+#| label: R calculations
+#| echo: false
+#| warning: false
+#| output: false
+title.date<-format(as.Date(Sys.Date()), "%b %d, %Y")
+title<-paste0("WiTs Template")
+date<-paste0("Printed on: ", title.date)
+```
+
+```{=typst}
+#h(-.7cm)
+#box(
+  fill: rgb(0,72,151),
+  width: 0.7fr,
+  inset: 10pt,
+  radius: 2pt,
+    )[
+    #text(size: 1.5em, fill: white, weight: "extrabold")[`r title`]\ 
+    #text(size: .8em, fill: white)[`r date`]
+]
+#v(.2em)
+```
+
+>`r lorem::ipsum(sentences=5)`
+
+### Testing Figure section 
+```{=typst}
+#line(length: 100%, stroke: .5pt+black)
+```
+::: {layout="[[2,6]]"}
+```{=typst}
+#align(right)[#emph[`r lorem::ipsum(sentences=1)`]] // the section blurb
+```
+![](nexus.png){fig-align="center" width="2in"}
+:::
+
+
+
+
+### Testing Text section 
+```{=typst}
+#line(length: 100%, stroke: .5pt+black)
+```
+::: {layout="[[2,6]]"}
+```{=typst}
+#align(right)[#emph[`r lorem::ipsum(sentences=1)`]] // the section blurb
+```
+**`r lorem::ipsum(sentences=1)`** `r lorem::ipsum(sentences=2)`
+:::
+
+::: {layout="[[2,6]]"}
+```{=typst}
+#align(right)[#emph[`r lorem::ipsum(sentences=1)`]] // the section blurb
+```
+**`r lorem::ipsum(sentences=1)`** `r lorem::ipsum(sentences=2)`
+:::
+
+
+
+
+### Testing Text section 
+```{=typst}
+#line(length: 100%, stroke: .5pt+black)
+```
+::: {layout="[[2,6]]"}
+```{=typst}
+#align(right)[#emph[`r lorem::ipsum(sentences=1)`]] // the section blurb
+```
+- Point 1. `r lorem::ipsum(sentences=1)`
+- Point 2. `r lorem::ipsum(sentences=1)`
+- point 3. `r lorem::ipsum(sentences=1)`
+:::

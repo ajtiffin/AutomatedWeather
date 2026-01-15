@@ -1,0 +1,135 @@
+---
+font-family: "Arial"
+font-size: 9pt
+format:
+  typst:
+    margin:
+      x: 2cm
+      y: 2.5cm
+    papersize: a4
+---
+
+```{=typst}
+// Set document-wide font and size
+#set text(font: "Arial", size: 9pt)
+#set par(justify: true, leading: 0.65em)
+
+// Compact title block (edit these values for your document)
+#set block(spacing: 0.5em)
+#align(center)[
+  #text(size: 14pt, weight: "bold")[Words in Tables (WiTs) Template]
+  #v(0.3em)
+  #text(size: 10pt)[A Quarto Typst implementation of Jon Moon's WiTs format]
+  #v(0.3em)
+  #text(size: 9pt)[Your Name]
+  #v(0.2em)
+  #text(size: 9pt)[#datetime.today().display()]
+]
+#v(1em)
+```
+
+# Introduction to WiTs Format
+
+This document demonstrates the **Words in Tables (WiTs)** format developed by Jon Moon. WiTs replaces traditional bullet points with structured tables that have headlines in the left column and detailed explanations in the right column.
+
+The format creates visual clarity, encourages sharper thinking, and helps key points stand out on the page.
+
+# Example WiTs Tables
+
+```{=typst}
+// WiT table function with better styling
+#let wit(data) = {
+  table(
+    columns: (25%, 75%),
+    stroke: (x, y) => (
+      top: if y == 0 { 1.5pt } else { 0.5pt + gray },
+      bottom: 0.5pt + gray,
+      left: none,
+      right: none,
+    ),
+    inset: (x: 10pt, y: 10pt),
+    align: (right, left),
+    ..data.flatten()
+  )
+}
+
+// Example WiT table
+#wit((
+  [*Clear structure*],
+  [WiTs organize information in a two-column format where the left column contains concise headlines and the right column provides detailed explanations. This structure makes documents easier to scan and understand.],
+
+  [*Enhanced readability*],
+  [By separating key points from their explanations, readers can quickly grasp the main ideas by scanning the left column, then dive into details as needed. This gives readers control over their reading experience.],
+
+  [*Sharper thinking*],
+  [The format forces writers to distill each point into a clear headline, leading to more focused and deliberate communication. This discipline eliminates the grammatical jumbling common in bullet-heavy documents.],
+
+  [*Professional appearance*],
+  [WiTs create a clean, modern look that stands out from traditional bullet-point documents. Testing shows WiTs-formatted content scores approximately three times higher for impact than bullet-point equivalents.],
+))
+```
+
+\
+
+# Creating Your Own WiTs
+
+To add a WiTs table to your document, use the custom Typst function shown above. Simply provide pairs of headlines and explanations:
+
+```typst
+#wit((
+  [*Your headline*],
+  [Your detailed explanation goes here...],
+
+  [*Another headline*],
+  [Another explanation...],
+))
+```
+
+# Key Principles
+
+```{=typst}
+#wit((
+  [*Left column: Headlines*],
+  [Keep headlines short, bold, and descriptive. They should be scannable keywords or short phrases that capture the essence of each point. Use bold formatting to make them stand out.],
+
+  [*Right column: Details*],
+  [Provide full explanations, context, and supporting information in the right column. Write in complete sentences and paragraphs. This is where you develop your ideas fully.],
+
+  [*Consistent structure*],
+  [Maintain parallel structure across all entries in your table. If one entry starts with a verb, consider starting others similarly. This consistency helps readers process information efficiently.],
+
+  [*No bullet points*],
+  [WiTs eliminate the need for bullets by using table structure to organize ideas. This creates cleaner documents with better visual hierarchy and improved readability.],
+))
+```
+
+\
+
+# Customization Options
+
+The template includes a `wit()` function that you can customize:
+
+```{=typst}
+#wit((
+  [*Document font*],
+  [Set the font-family and font-size parameters in the YAML front matter. The defaults are Arial 9pt. These settings apply to the entire document including all WiTs tables.],
+
+  [*Column widths*],
+  [Adjust the columns parameter to change the ratio between headlines and details. The default is 25% for headlines and 75% for details, but you can modify this based on your content needs.],
+
+  [*Visual styling*],
+  [Customize stroke thickness, colors, inset spacing, and alignment to match your organization's branding or personal preferences. The current styling emphasizes clean lines and professional appearance.],
+
+  [*Left column alignment*],
+  [Headlines in the left column are right-aligned by default, creating a clean visual separation from the detailed explanations in the right column.],
+))
+```
+
+---
+
+## About This Template
+
+**Words in Tables (WiTs)** is a communication format developed by Jon Moon as an alternative to bullet points. The format has been adopted by organizations including the IMF, World Bank, and numerous Fortune 500 companies.
+
+For more information, visit [jmoon.co.uk](https://jmoon.co.uk/).
+
