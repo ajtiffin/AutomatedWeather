@@ -1,0 +1,52 @@
+---
+font-family: "Arial"
+font-size: 9pt
+format:
+  typst:
+    margin:
+      x: 2cm
+      y: 2.5cm
+    papersize: a4
+---
+
+```{=typst}
+#set text(font: "Arial", size: 9pt)
+#set par(justify: true, leading: 0.65em)
+#set block(spacing: 0.5em)
+#align(center)[
+  #text(size: 14pt, weight: "bold")[AI Publications - Weekly Briefing]
+  #v(0.3em)
+  #text(size: 10pt)[January 14, 2026]
+]
+#v(1em)
+
+#let wit(data) = {
+  table(
+    columns: (25%, 75%),
+    stroke: (x, y) => (
+      top: if y == 0 { 1.5pt } else { 0.5pt + gray },
+      bottom: 0.5pt + gray,
+      left: none,
+      right: none,
+    ),
+    inset: (x: 10pt, y: 8pt),
+    align: (left, left),
+    ..data.map(row => (strong(row.at(0)), row.at(1))).flatten()
+  )
+}
+
+#wit((
+  ("IMF Staff Discussion on AI Skills Gaps", "The IMF released a Staff Discussion Note on January 9, 2026, titled \"Bridging Skill Gaps for the Future: New Jobs Creation in the AI Age.\" The publication examines how demand and supply of new skills—particularly in IT and AI—are reshaping labor markets globally, with approximately one in ten job vacancies in advanced economies requiring at least one new skill, rising to about half in emerging economies. 2."),
+  ("60% of Jobs Face AI-Driven Disruption", "According to the IMF, 60% of jobs are exposed to AI-driven change, representing a substantial workforce impact across the global economy. This exposure varies significantly by region and industry, creating both opportunities and challenges for workers and policymakers. 3."),
+  ("AI Skills Deepen Economic Polarization", "The IMF Staff Discussion Note identifies that while new AI-related skills boost average wages and employment overall, they deepen labor market polarization, disproportionately benefitting high-skilled workers and low-skilled service workers while potentially contributing to middle-class shrinkage. This creates differential wage impacts and employment challenges across skill levels. 4."),
+  ("AI Vacancies Command Wage Premiums", "Job vacancies demanding AI skills post significantly higher wages compared to traditional positions. However, the diffusion of AI skills is linked to lower employment in occupations with high AI exposure and low complementarity with AI technology, creating particular challenges for youth employment prospects. 5."),
+  ("44% of Core Skills Shifting in 5 Years", "The World Economic Forum indicates that 44% of core skills will change within the next five years as organizations adopt AI technologies. This rapid skills transformation necessitates urgent reskilling and education initiatives across economies. 6."),
+  ("Cross-Country Skill Imbalance Varies Widely", "The IMF's Skill Imbalance Index reveals significant cross-country differences in AI skills demand and supply. The publication recommends that economies facing strong demand prioritize education and reskilling, while those with strong supply should foster firms' absorption of these skills through innovation and improved access to credit. 7."),
+  ("IMF Economic Outlook Scheduled for January 19", "The IMF World Economic Outlook Update for January 2026 is scheduled for release on January 19, 2026, with a press briefing in Brussels. While details on AI content are limited in advance materials, the outlook will address the global economy's adjustment to policy changes and revised growth projections. 8."),
+  ("AI Skills Appear First in United States", "New AI skills emerge first in the United States before diffusing to other advanced economies, establishing the U.S. as the initial labor market testing ground for AI-driven employment changes. This pattern suggests that U.S. labor market trends may foreshadow global developments. 9."),
+  ("Human-Centric AI Implementation Emphasized", "The World Economic Forum stresses that AI implementation must prioritize human integrity and inclusion, with leaders tasked with ensuring that AI adoption protects workers and leaves no one behind. This reflects growing consensus that technological deployment requires strategic collaboration and responsible governance frameworks. 10."),
+  ("Mortgage Industry AI Adoption Accelerating", "AI adoption for customer-facing tasks in mortgage processes is expected to grow significantly in 2026, according to industry leaders quoted in recent analysis. This sector-specific trend exemplifies broader AI integration across financial services institutions. Note: Based on available search results, substantive AI-focused publications were identified from the IMF and World Economic Forum within the specified timeframe. Search results did not include recent publications meeting the threshold criteria from the World Bank, OECD, BIS, U.S. Federal Reserve, Bank of England, or European Central Bank during this period.")
+))
+```
+
+*Sources: imf.org, weforum.org, insidemortgagefinance.com*

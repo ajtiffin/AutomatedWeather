@@ -16,7 +16,7 @@ format:
 #align(center)[
   #text(size: 14pt, weight: "bold")[SACU Trade Developments - Weekly Briefing]
   #v(0.3em)
-  #text(size: 10pt)[January 06, 2026]
+  #text(size: 10pt)[January 14, 2026]
 ]
 #v(1em)
 
@@ -36,17 +36,17 @@ format:
 }
 
 #wit((
-  ("SACU Reform Emerges as 2026 Priority", "South Africa is actively pushing for Southern African Customs Union reform to enhance its trade flexibility and bilateral negotiation capacity. The debate centers on balancing South Africa's need for agile trade agreements with neighboring states' development concerns, positioning SACU restructuring as a major discussion point for 2026. 2."),
-  ("Customs Union Opacity Blocks Trade Partners", "Potential trading partners view SACU as opaque and unpredictable, making them reluctant to engage with the union rather than South Africa directly. This perception creates a significant barrier to trade expansion, particularly with Middle Eastern and Asian markets that represent the fastest-growing economies globally. 3."),
-  ("Member States Deploy Protectionist Measures", "SACU member states, including Botswana and Namibia, impose non-tariff barriers such as vegetable import bans against other member countries without legitimate health or disease justifications. These protectionist practices undermine the customs union's foundational purpose and contradict its rules. 4."),
-  ("Consultation Process Slows Trade Negotiations", "South Africa must consult with Botswana, Eswatini, Lesotho, and Namibia on all trade matters, a process that was historically workable but now constrains rapid bilateral agreement-making in an accelerated global trade environment. The current system cannot accommodate the speed required for modern trade negotiations. 5."),
-  ("Asia-Middle East Market Expansion Blocked", "South Africa faces barriers to deepening penetration in fast-growing Asian and Middle Eastern markets due to SACU constraints, despite recent celebratory export protocols. The region remains underexploited compared to existing African, American, EU, and UK market access. 6."),
-  ("Regional Development Support Preservation Critical", "Any SACU reform must preserve development programmes that provide essential social support to neighboring states to avoid regional destabilization. South Africa would ultimately suffer economic consequences if neighboring economies collapsed due to reform adjustments. 7."),
-  ("AfCFTA Partnership Gains Momentum", "The African Union and UAE reaffirmed commitment to the African Continental Free Trade Area (AfCFTA) as a mutually reinforcing strategic priority alongside peace and security initiatives. Both parties recognized expanded trade and investment as contributors to stability and sustainable development across Africa. 8."),
-  ("Tariff Amendment Implementation Begins", "South Africa's customs authority implemented draft amendments to the Customs and Excise Act effective January 1, 2026, including new tariff subheadings for mineral wool and beverage cans to facilitate competitive market monitoring within SACU. 9."),
-  ("Rules of Origin Self-Certification Advancing", "The EU-WCO Rules of Origin Africa Programme steering committee examined 2025 impact and is preparing implementation of origin self-certification across Africa. This initiative aims to strengthen intra-African trade and trade between Africa and external regions. 10."),
-  ("Strategic Recalibration Defines Regional Relations", "Southern African regional cooperation in 2026 is characterized by pragmatism and strategic recalibration, with emphasis on balancing individual country interests against collective development objectives. This shift reflects broader repositioning of regional trade and diplomatic priorities.")
+  ("SACU Reform Push Intensifies", "SUMMARY: South Africa is urged to push for SACU reforms to gain trade flexibility amid global changes, as the customs union appears opaque to partners. Issues include non-tariff barriers like Botswana and Namibia's vegetable import bans from South Africa, seen as protectionism. A comprehensive review is needed for bilateral deals without regional consultation."),
+  ("EU Delists South Africa from High-Risk", "SUMMARY: The EU decided on January 9, 2026, to remove South Africa from its high-risk jurisdictions list, effective January 29, easing due diligence for trade and payments. This follows FATF greylist exit in October 2025 and includes other African nations like Nigeria. It supports smoother cross-border transactions for SACU-related travel and investment."),
+  ("AGOA Extension Passes US House", "SUMMARY: On January 14, 2026, the African Union welcomed the US House's passage of a three-year AGOA extension, urging Senate approval. AGOA boosts US-Africa trade, industrialization, and jobs; SACU members like South Africa benefit as key beneficiaries. It reinforces regional value chains and economic ties."),
+  ("SACU Vegetable Import Disputes", "SUMMARY: Botswana and Namibia continue banning South African vegetable imports to protect local farmers, creating non-tariff barriers within SACU. This violates customs union spirit without health risks, prompting calls for better coordination. South Africa seeks reform to address such protectionism."),
+  ("South Africa Eyes 2026 Trade Reforms", "SUMMARY: Entering 2026, South Africa focuses on turning 2025 logistics gains into reforms, including AfCFTA exports over $1.3 billion via EMIA. SACU aligns with SADC/AfCFTA for Africa trade hub status, emphasizing rail/port private participation. Momentum targets OECD-level efficiency."),
+  ("Economist Calls SACU Review Overdue", "SUMMARY: On January 9, 2026, economist Wandile Sihlobo stated SACU review is overdue due to partner reluctance from its opacity. South Africa must prioritize interests in fast-changing trade, while maintaining neighbor support programs. Past consultations slow bilateral agility."),
+  ("Market Pressures Drive SA SACU Reform", "SUMMARY: Tightening global trade, US protectionism, and compliance needs renew South Africa's SACU reform push for agility. This allows quicker bilateral agreements amid urgency, unlike slow past processes. Preserves development aid to smaller members."),
+  ("AfCFTA Gains Highlight SACU Context", "SUMMARY: South Africa's AfCFTA exports surged in 2025, tying into SACU's regional role. Nestlé imported reduced-tariff goods from South Africa, signaling value chains. 2026 tariff phase-downs for textiles/auto sectors could boost SACU manufacturing integration."),
+  ("Non-Tariff Barriers Harm SACU Unity", "SUMMARY: SACU rule non-compliance, like import bans, creates barriers and protectionism. Effective coordination is urged over unilateral actions for food security. Reform ensures flexibility without undermining union benefits."),
+  ("Global Trade Shifts Pressure SACU", "SUMMARY: Changing world requires SACU members to prioritize national interests; South Africa leads reform calls. Aligns with AfCFTA/SADC for larger market access, but opacity deters partners focused on SA alone. Builds on 2025 logistics progress.")
 ))
 ```
 
-*Sources: wandile.substack.com, dailymaverick.co.za, wandilesihlobo.com, sars.gov.za, freightnews.co.za, au.int, southernafricantimes.com*
+*Sources: zawya.com, crown.co.za, ethicalbusiness.africa, au.int, atta.travel, freightnews.co.za, times.co.sz*

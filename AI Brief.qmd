@@ -1,0 +1,115 @@
+---
+title: "AI Weekly Brief: Major International Financial Institutions"
+subtitle: "Week of 8–14 January 2026"
+format: 
+    typst:
+        mainfont: "Arial"
+        fontsize: 9pt
+        fig-format: png
+        include-before-body:
+             text: |
+                #show heading: set text(rgb(0,72,151))
+---
+***
+
+## IMF – Blog: “New Skills and AI Are Reshaping the Future of Work”  
+**Institution:** International Monetary Fund  
+**Title:** New Skills and AI Are Reshaping the Future of Work  
+**Link:** https://www.imf.org/en/blogs/articles/2026/01/14/new-skills-and-ai-are-reshaping-the-future-of-work  
+**Publication date:** 13 January 2026  
+
+The post highlights how AI-driven demand for new skills is transforming labor markets, with about 40 percent of global jobs exposed to AI-related change and measurable employment impacts in AI‑vulnerable occupations.  The main policy takeaway is the need for comprehensive strategies—anchored in new skill metrics such as a Skill Imbalance Index and in AI preparedness diagnostics—to invest in worker upskilling, support job transitions, and ensure that AI-driven productivity gains are broadly shared.[1]
+**Tags:** labour_markets, skills_education, macro, governance  
+
+***
+
+## IMF – Staff Discussion Note: “Bridging Skill Gaps for the Future: New Jobs Creation in the AI Age”  
+**Institution:** International Monetary Fund  
+**Title:** Bridging Skill Gaps for the Future: New Jobs Creation in the AI Age  
+**Link:** https://www.imf.org/en/publications/staff-discussion-notes/issues/2026/01/09/bridging-skill-gaps-for-the-future-new-jobs-creation-in-the-ai-age  
+**Publication date:** 8 January 2026 (SDN 2026/001)  
+
+This Staff Discussion Note analyzes how demand and supply of new skills—especially in IT and AI—are reshaping job creation, wages, and hiring patterns across economies.  It argues for targeted education and training policies, coupled with labor‑market and innovation frameworks, to close AI‑related skill gaps and to support the emergence of new, higher‑quality jobs in the “AI age.”[2][3][4]
+**Tags:** labour_markets, skills_education, macro, development  
+
+***
+
+## BIS – Bulletin: “Artificial intelligence and growth in advanced and emerging economies: short‑ and long‑term effects”  
+**Institution:** Bank for International Settlements  
+**Title:** Artificial intelligence and growth in advanced and emerging economies: short‑ and long‑term effects  
+**Link:** https://www.bis.org/publ/bisbull120.pdf  
+**Publication date:** 7 January 2026  
+
+The bulletin examines how rapid advances in AI and the financing of AI firms are shaping macroeconomic growth prospects, distinguishing short‑term demand effects from longer‑term productivity gains in advanced and emerging economies.  It underscores that while AI investment and related stock‑market dynamics can support near‑term activity, realizing durable growth dividends hinges on complementary policies that foster diffusion, manage financial risks, and support workers’ adjustment.[5][6]
+**Tags:** macro, finance, development, labour_markets, governance  
+
+***
+
+## World Bank – Event & Report: “Digital Progress and Trends Report 2025: Strengthening AI Foundations”  
+**Institution:** World Bank Group  
+**Title:** Digital Progress and Trends Report 2025: Strengthening AI Foundations (Tokyo Online Morning Seminar “Strengthening AI Foundations”)  
+**Link:** https://www.worldbank.org/en/events/2026/01/15/world-bank-tokyo-online-morning-seminar-digital-progress-and-trends-report-2025  
+**Event date:** 15 January 2026 (JST)  
+
+The seminar presents a new report that maps the global AI landscape for development, emphasizing how AI is reshaping economies and societies and spotlighting the spread of “Small AI” solutions that run on everyday devices in low‑ and middle‑income countries.  Policy messages focus on building the “four Cs” of AI foundations—connectivity, compute, context (data), and competency (skills)—alongside data governance, regulatory reforms, and competition‑friendly policies to ensure that AI supports inclusive and sustainable development.[7]
+**Tags:** development, infrastructure_compute, skills_education, governance, competition_policy  
+
+***
+
+## World Bank – Global Economic Prospects 2026: AI‑Related Analysis (Global Outlook and Regional Chapters)  
+**Institution:** World Bank Group  
+**Title:** Global Economic Prospects, January 2026 – AI‑Related Material in Global Outlook and Regional Chapters  
+**Links:**  
+- Global outlook chapter: https://thedocs.worldbank.org/en/doc/7ce50b5aa95bef66048680bba9926ec8-0050012026/related/GEP-Jan-2026-Chapter-1.pdf  
+- East Asia and Pacific analysis: https://thedocs.worldbank.org/en/doc/7ce50b5aa95bef66048680bba9926ec8-0050012026/related/GEP-Jan-2026-Analysis-EAP.pdf  
+- Europe and Central Asia analysis: https://thedocs.worldbank.org/en/doc/7ce50b5aa95bef66048680bba9926ec8-0050012026/related/GEP-Jan-2026-Analysis-ECA.pdf  
+- Latin America and the Caribbean analysis: https://thedocs.worldbank.org/en/doc/7ce50b5aa95bef66048680bba9926ec8-0050012026/related/GEP-Jan-2026-Analysis-LAC.pdf  
+- Box on AI preparedness and upside risks: https://thedocs.worldbank.org/en/doc/7ce50b5aa95bef66048680bba9926ec8-0050012026/related/GEP-Jan-2026-Box-1-2.pdf  
+**Publication date:** January 2026  
+
+The GEP 2026 release notes that a surge in AI spending has recently supported global activity and highlights AI as a key upside risk to growth through productivity gains and digital‑infrastructure investment.  At the same time, the materials stress that uneven AI preparedness across regions may widen productivity and income gaps unless countries strengthen digital infrastructure, skills, and legal frameworks that enable broad‑based, responsible AI adoption.[8][9][10][11][12]
+**Tags:** macro, development, infrastructure_compute, labour_markets, governance  
+
+***
+
+## Data sources  
+
+This brief draws on openly accessible publications, blogs, PDFs, and event pages issued or hosted by the IMF, World Bank Group, BIS, and related platforms during the week of 8–14 January 2026, with emphasis on outputs where AI is a central analytical or policy focus.[3][4][9][10][6][11][12][1][2][7][8][5]
+
+[1](https://www.imf.org/en/blogs/articles/2026/01/14/new-skills-and-ai-are-reshaping-the-future-of-work)
+[2](https://www.elibrary.imf.org/view/journals/006/2026/001/006.2026.issue-001-en.xml)
+[3](https://www.imf.org/en/publications/staff-discussion-notes/issues/2026/01/09/bridging-skill-gaps-for-the-future-new-jobs-creation-in-the-ai-age-572136)
+[4](https://www.elibrary.imf.org/view/journals/006/2026/001/006.2026.issue-001-en.pdf)
+[5](https://www.bis.org/publ/bisbull120.pdf)
+[6](https://www.bis.org/index.htm)
+[7](https://www.worldbank.org/en/events/2026/01/15/world-bank-tokyo-online-morning-seminar-digital-progress-and-trends-report-2025)
+[8](https://thedocs.worldbank.org/en/doc/7ce50b5aa95bef66048680bba9926ec8-0050012026/related/GEP-Jan-2026-Analysis-EAP.pdf)
+[9](https://thedocs.worldbank.org/en/doc/7ce50b5aa95bef66048680bba9926ec8-0050012026/related/GEP-Jan-2026-Analysis-ECA.pdf)
+[10](https://thedocs.worldbank.org/en/doc/7ce50b5aa95bef66048680bba9926ec8-0050012026/related/GEP-Jan-2026-Analysis-LAC.pdf)
+[11](https://thedocs.worldbank.org/en/doc/7ce50b5aa95bef66048680bba9926ec8-0050012026/related/GEP-Jan-2026-Box-1-2.pdf)
+[12](https://thedocs.worldbank.org/en/doc/7ce50b5aa95bef66048680bba9926ec8-0050012026/related/GEP-Jan-2026-Chapter-1.pdf)
+[13](https://www.oecd.org/en/publications/governing-with-artificial-intelligence_795de142-en/full-report.html)
+[14](https://blog-pfm.imf.org/en/pfmblog/2025/11/artificial-intelligence-as-public-financial-management-infrastructure)
+[15](https://www.oecd.org/en/publications/the-adoption-of-artificial-intelligence-in-firms_f9ef33c3-en/full-report.html)
+[16](https://www.oecd.org/en/topics/artificial-intelligence.html)
+[17](https://www.oecd.org/en/publications/competition-in-artificial-intelligence-infrastructure_623d1874-en/full-report.html)
+[18](https://www.oecd.org/en/about/projects/ai-and-the-future-of-social-protection.html)
+[19](https://www.oecd.org/en/blogs/2026/01/quantum-technologies-and-the-role-of-governments-and-policy-in-kickstarting-the-second-revolution.html)
+[20](https://www.oecd.org/en/publications/oecd-framework-for-the-classification-of-ai-systems_cb6d9eca-en.html)
+[21](https://www.oecd.org/en/events/2025/07/artificial-intelligence-in-finance.html)
+[22](https://www.oecd.org/en/events/2025/12/competition-in-artificial-intelligence-infrastructure.html)
+[23](https://www.imf.org/en/blogs/articles/2024/01/14/ai-will-transform-the-global-economy-lets-make-sure-it-benefits-humanity)
+[24](https://www.imf.org/en/capacity-development/training/icdtc/schedule/ce/2026/pfmce26-08)
+[25](https://www.oecd.org/en/publications/bridging-the-ai-skills-gap_66d0702e-en.html)
+[26](https://www.imf.org/en/blogs/articles/2025/11/20/how-europe-can-capture-the-ai-growth-dividend)
+[27](https://www.oecd.org/en/publications/governing-with-artificial-intelligence_795de142-en/full-report/how-artificial-intelligence-is-accelerating-the-digital-government-journey_d9552dc7.html)
+[28](https://www.imf.org/en/blogs)
+[29](https://www.oecd.org/en/publications/emerging-divides-in-the-transition-to-artificial-intelligence_7376c776-en.html)
+[30](https://documents.worldbank.org/en/publication/documents-reports/documentdetail/099112525160593874)
+[31](https://www.oecd.org/en/publications/artificial-intelligence-and-the-changing-demand-for-skills-in-the-labour-market_88684e36-en.html)
+[32](https://www.bis.org/review/r251031h.htm)
+[33](https://www.bis.org/events/260521_bcbs.pdf)
+[34](https://www.bis.org/publ/othp90.pdf)
+[35](https://www.bis.org/fsi/publ/insights63.pdf)
+[36](https://www.bis.org/ifc/events/260528_ifc_cfp.pdf)
+[37](https://www.bis.org/careers/vacancies/jr100280.htm)

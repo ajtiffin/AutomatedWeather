@@ -9,7 +9,7 @@ library(httr2)
 
 # API Query Functions -----------------------------------------------------
 
-query_perplexity <- function(prompt, model = "sonar") {
+query_perplexity <- function(prompt, model = "sonar-pro") {
   api_key <- Sys.getenv("PERPLEXITY_API_KEY")
   if (!nzchar(api_key)) {
     stop("Set PERPLEXITY_API_KEY in your environment")
@@ -78,7 +78,7 @@ policy_debt_prompt <- paste0(
   format(Sys.Date(), "%B %d, %Y"), ". Verify all dates. Exclude anything older.\n\n",
   "Guidelines:\n",
   "- Prioritize significance: lead with the most impactful development\n",
-  "- Include central bank rate decisions, inflation announcements, or major debt news\n",
+  "- Focusing on sub-Saharan Africa, include central bank rate decisions, inflation announcements, or major debt news\n",
   "- Check Reuters Africa, cbrates.com, and official central bank sites\n",
   "- Use the spread movement data below to inform your narrative where relevant\n",
   "- NEVER comment on data availability or lack of news—just report what happened\n",
@@ -89,7 +89,7 @@ policy_debt_prompt <- paste0(
   spread.context
 )
 
-para1_raw <- query_perplexity(policy_debt_prompt, model = "sonar")
+para1_raw <- query_perplexity(policy_debt_prompt, model = "sonar-pro")
 
 # Clean and finalize paragraph 1
 para1 <- query_perplexity(
@@ -102,7 +102,7 @@ para1 <- query_perplexity(
     "Keep to 60-80 words. Return only the cleaned paragraph:\n\n",
     para1_raw
   ),
-  model = "sonar"
+  model = "sonar-pro"
 )
 
 # Generate Economist-style headline for paragraph 1
@@ -142,7 +142,7 @@ currency_commodity_prompt <- paste0(
   com.context
 )
 
-para2_raw <- query_perplexity(currency_commodity_prompt, model = "sonar")
+para2_raw <- query_perplexity(currency_commodity_prompt, model = "sonar-pro")
 
 # Clean and finalize paragraph 2
 para2 <- query_perplexity(
@@ -155,7 +155,7 @@ para2 <- query_perplexity(
     "Keep to 50-70 words. Return only the cleaned paragraph:\n\n",
     para2_raw
   ),
-  model = "sonar"
+  model = "sonar-pro"
 )
 
 # Generate Economist-style headline for paragraph 2
@@ -189,7 +189,7 @@ capital_prompt <- paste0(
   "- Factual and terse—no speculation or meta-commentary\n"
 )
 
-capital_raw <- query_perplexity(capital_prompt, model = "sonar")
+capital_raw <- query_perplexity(capital_prompt, model = "sonar-pro")
 
 # Clean capital summary
 capital <- query_perplexity(
@@ -201,7 +201,7 @@ capital <- query_perplexity(
     "Keep to 2-3 sentences maximum. Return only the cleaned text:\n\n",
     capital_raw
   ),
-  model = "sonar"
+  model = "sonar-pro"
 )
 
 # Generate Economist-style headline for capital flows
