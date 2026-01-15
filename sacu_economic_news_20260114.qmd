@@ -1,0 +1,43 @@
+---
+font-family: "Arial"
+font-size: 9pt
+format:
+  typst:
+    margin:
+      x: 2cm
+      y: 2.5cm
+    papersize: a4
+---
+
+```{=typst}
+#set text(font: "Arial", size: 9pt)
+#set par(justify: true, leading: 0.65em)
+#set block(spacing: 0.5em)
+#align(center)[
+  #text(size: 14pt, weight: "bold")[### Role & Goal
+You Are A Financial Research Assistant. Your]
+  #v(0.3em)
+  #text(size: 10pt)[January 14, 2026]
+]
+#v(1em)
+
+#let wit(data) = {
+  table(
+    columns: (25%, 75%),
+    stroke: (x, y) => (
+      top: if y == 0 { 1.5pt } else { 0.5pt + gray },
+      bottom: 0.5pt + gray,
+      left: none,
+      right: none,
+    ),
+    inset: (x: 10pt, y: 8pt),
+    align: (left, left),
+    ..data.map(row => (strong(row.at(0)), row.at(1))).flatten()
+  )
+}
+
+#wit((
+))
+```
+
+*Sources: imf.org, dawn.com, atlanticcouncil.org, weforum.org*
