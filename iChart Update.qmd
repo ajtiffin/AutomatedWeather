@@ -1,0 +1,797 @@
+---
+format: 
+    typst:
+        mainfont: "Arial"
+        fontsize: 9.5pt
+        fig-format: png
+        include-before-body:
+             text: |
+                #show heading: set text(rgb(0,72,151))
+editor_options: 
+  chunk_output_type: console
+execute:
+   fig-dpi: 400 # Increase resolution for all figures
+---
+
+
+```{r throat clearing}
+#| label: Throat Clearing
+#| output: false
+#| echo: false
+
+rm(list=ls())
+Sys.setenv(TZ="UTC")
+#**************************************
+cutoff.date<-as.Date(Sys.Date())
+start="2025-4-1"
+end=Sys.Date()
+oilprice<-63.02
+#************************************ 
+
+library(ggthemes)
+library(lubridate)
+library(scales)
+library(countrycode)
+library(readxl)
+library(knitr)
+library(kableExtra)
+library(patchwork)
+library(reticulate)
+use_python("C:/ProgramData/Python3", required = TRUE)
+library(tidyverse)
+
+setwd("c:\\Projects\\AutomatedWeatherNote")
+
+SSAlist<-c("AGO", "BEN", "BWA", "BFA", "BDI", "CMR", "CPV", "CAF", "TCD", "COM",
+            "COD", "COG","CIV", "GNQ", "ERI", "ETH", "GAB", "GMB", "GHA", "GIN",
+            "GNB", "KEN", "LSO", "LBR", "MDG", "MWI", "MLI", "MUS", "MOZ", "NAM",
+            "NER", "NGA", "RWA", "STP", "SEN", "SYC", "SLE", "ZAF", "SSD", "SWZ",
+            "TZA", "TGO", "UGA", "ZMB", "ZWE")
+ssa.imf<-countrycode(SSAlist, "iso3c", "imf")
+  CEMAC<-c("GAB", "CMR", "CAF", "TCD", "COG", "GNQ")
+  WAEMU<-c("BEN", "BFA", "CIV", "GNB", "MLI", "NER", "SEN", "TGO")
+# New colors for SSA REO
+{fundblue<-"#004C97"
+ssablue<-"#0065d2"
+ssapeach1<-"#fab58a"
+ssapeach2<-"#ff8745"
+ssapeach3<-"#fa5a00"
+ssapeach4<-"#cc4700"
+ssapeach5<-"#802b00"
+ssagrey1<-"#b3b3b3"
+ssagrey2<-"#949494"
+ssagrey3<-"#707070"
+ssagrey4<-"#404040"
+ssagrey5<-"#171717"}
+
+slidetheme<- theme_bw() +
+  theme(
+    panel.grid = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    panel.background = element_rect(fill = "transparent"), 
+    plot.background = element_rect(fill = "transparent", color = NA),
+    panel.border = element_blank(),
+    axis.line = element_line(color="grey20"),
+    axis.ticks = element_line(color="grey20"),
+    axis.ticks.length=unit(-0.10, "cm"),
+    axis.text.y = element_text(margin=margin(0,10,0,0,"pt")),
+    axis.text = element_text(size=7),
+    plot.title=element_text(size=9, face="bold"),
+    plot.subtitle=element_text(size=7),
+    plot.caption = element_text(size=6, color="grey30", hjust=0),
+    legend.text = element_text(size=6, color="grey30"),
+    plot.title.position = "plot",
+    plot.caption.position = "plot")
+theme_set(slidetheme)
+
+
+imf_datatools <- import("imf_datatools")
+imf_datatools$idata_utilities$PRIVATE <- TRUE
+py_config()
+
+db.list<-imf_datatools$idata_utilities$get_databases()
+
+ecosextract<-function(code.list, country.list, database, start, end, frq){
+  ecos<-imf_datatools$get_ecos_sdmx_data(database, country.list,code.list, freq = frq)%>%
+    mutate(date=as.Date(row.names(.)))%>%
+    mutate(year=year(date))%>%
+    # select(-date)%>%
+    filter(year>=start & year<=end)%>%
+    select(date, everything())%>%
+    gather(code, value, -c(year, date))%>%
+    mutate(variable=str_sub(code,start=4, end=-3),
+           imf=as.numeric(str_sub(code,1,3)))%>%
+    mutate(iso3c=countrycode(imf,"imf", "iso3c"))%>%
+    select(-code)%>%
+    spread(variable, value) %>% 
+    arrange(imf,date)%>%
+    mutate(iso3c=countrycode(imf,"imf", "iso3c"))%>%
+    ungroup() %>% 
+    as_tibble()
+  return(ecos)
+}
+bbextract<-function(code.list, start, end){
+  ecos<-imf_datatools$get_ecos_bloomberg_data(code.list, field='PX_LAST')%>%
+    mutate(date=as.Date(row.names(.)))%>%
+    filter(date>=start & date<=end)%>%
+    select(date, everything())%>%
+    pivot_longer(!date, names_to = "code", values_to = "value")%>%
+    mutate(variable=str_sub(code,start=1, end=8)) %>% 
+    select(-code)%>%
+    pivot_wider(names_from=variable, values_from=value) %>% 
+    ungroup() %>% 
+    mutate_all( ~ case_when(!is.nan(.x) ~ .x)) %>% 
+    as_tibble()
+  return(ecos)
+}
+commodityextract<-function(code.list, start, end, freq, type){
+  ecos<-imf_datatools$ecos_sdmx_utilities$get_ecos_commodity_data(
+    "WEO_PRIMARY_COMMODITY_PRICE_SYSTEM_LIVE",
+    code.list, datatype = type, freq = freq) %>% 
+    mutate(date=as.Date(row.names(.)))%>%
+    filter(date>=start & date<=end)%>%
+    select(date, everything())%>%
+    pivot_longer(!date, names_to = "code", values_to = "value")%>%
+    mutate(variable=str_sub(code,start=1, end=8)) %>% 
+    select(-code)%>%
+    pivot_wider(names_from=variable, values_from=value) %>%
+    ungroup() %>% 
+    mutate_all( ~ case_when(!is.nan(.x) ~ .x)) %>% 
+    as_tibble()
+  return(ecos)
+}
+
+idata.basic<-function(var.list, country.list, database, start, end, frq){
+  key.var<-paste0(var.list, collapse="+")
+  key.ctry<-paste0(country.list, collapse="+")
+  key.freq<-frq
+  key<-paste0(key.ctry,".",key.var,".",key.freq)
+  data<-imf_datatools$idata_utilities$get_idata_data(database, key=key, start=start, end=end, panel="COUNTRY") %>% 
+    janitor::clean_names() %>% 
+    rename(date=dates, iso3c=country) %>%
+    mutate(date=as.Date(date)) %>% 
+    select(date, everything())%>%
+    pivot_longer(-c(date, iso3c), names_to = "code", values_to = "value") %>% 
+    mutate(variable=str_sub(code,start=1, end=-3)) %>% 
+    select(-code)%>%
+    pivot_wider(names_from = variable, values_from = value) %>% 
+    arrange(iso3c,date)%>%
+    ungroup() %>% 
+    as.tibble()
+  print(key)
+  return(data)
+}
+
+bbiextract<-function(var.list, field, start, end, frq){
+  key.var<-paste0(var.list, collapse="+")
+  key.field<-paste(field, collapse="+")
+  key.freq<-frq
+  key<-paste0(key.var,".",key.field,".", key.freq)
+  print(key)
+  data<-imf_datatools$idata_utilities$get_idata_data("IMF.CSF:BBGDL", key=key, start=start, end=end)%>% 
+    janitor::clean_names() %>% 
+    mutate(date=as.Date(rownames(.)))%>% 
+    select(date, everything())%>%
+    pivot_longer(!date, names_to = "code", values_to = "value")%>%
+    mutate(variable=sub("_.*", "", code) )%>% 
+    select(-code)%>%
+    pivot_wider(names_from=variable, values_from=value) %>% 
+    ungroup() %>% 
+    mutate_all( ~ case_when(!is.nan(.x) ~ .x)) %>% 
+    as.tibble()
+  return(data)
+}
+
+# AFR-specific groups-------------------------------
+weo.codes<-haven::read_dta("\\\\data1\\WEO\\WEO_Stata_Databases\\weo groups\\3. WEO Country Group Composition.dta")
+# weo.codes<-imf_datatools$ecos_sdmx_utilities$get_weo_country_codes() |> janitor::clean_names() # broken link
+ssa.list<-weo.codes %>%
+  rename(iso3c=countrycode) |> 
+  filter(groupcode=="G603") %>% pull(iso3c)
+```
+
+```{r}
+#| label: R calculations
+#| echo: false
+#| warning: false
+#| output: false
+title.date<-format(as.Date(Sys.Date()), "%b %d, %Y")
+title<-paste0("Updated Chart Gallery")
+date<-paste0("Printed on: ", title.date)
+```
+
+```{=typst}
+#set page(margin: (top: 1cm, rest: 2cm))  // Control margins properly
+#box(
+  fill: rgb(0,72,151),
+  width: 100%,
+  inset: 15pt,
+  radius: 2pt
+    )[
+    #text(size: 1.3em, fill: white, weight: "extrabold")[`r title`]\ 
+    #text(size: .8em, fill: white)[`r date`]
+]
+#v(.2em)
+```
+
+```{r}
+#| label: page 1 charts
+#| echo: false
+#| output: false
+
+##### Ribbon chart#################################
+
+series.list<-c('JPSSGAOB_INDEX', # AGO Yes
+               "JPSSGDGH_INDEX", # GHA Yes
+               "JPGCKESS_INDEX", #KEN Yes
+               "JPSSGNIG_INDEX", #NGA Yes 
+               "JPSSGSN_INDEX", #SEN/WAEMU Yes
+               "JPSSGSAF_INDEX", #ZAF Yes
+               # "JPSSGTZB_INDEX", #TZA No
+              #  "JPSSGZMB_INDEX", #ZMB Yes
+               "JPSSGCDI_INDEX", #CIV Yes
+              #  "JPEGETSS_INDEX", #ETH Yes
+               "JPSSGGA_INDEX", #GAB Yes
+               "JPSSGMZB_INDEX",#MOZ Yes
+               "JPSSGNMB_INDEX",#NAM Yes
+              #  "JPEFBJSS_INDEX", #BEN No
+               # "JPGCCMSS_INDEX",#CMR No
+               "JPEIGLSP_INDEX"
+               # ,#EMBI Yes
+               # "USGG10YR_INDEX"#USA Yes
+               )
+
+raw = bbiextract(series.list, "PX_LAST", "2019-01-1", as.character(Sys.Date()), "D") 
+raw %>% tail()
+
+
+data<-raw %>%  
+  tidyr::fill(everything())
+# %>% 
+  # filter(date<=cutoff.date)
+plotlist<-data.frame(index=c('jpssgaob', # AGO Yes #
+                            "jpssgdgh", # GHA Yes #
+                             "jpgckess", #KEN Yes #
+                             "jpssgnig", #NGA Yes #
+                             "jpssgsn", #SEN/WAEMU Yes #
+                             "jpssgsaf", #ZAF Yes #
+                            #  "jpssgzmb", #ZMB Yes
+                             "jpssgcdi", #CIV Yes #
+                            #  "jpegetss", #ETH Yes
+                             "jpssgga", #GAB Yes #
+                             "jpssgmzb",#MOZ Yes
+                             "jpssgnmb",#NAM Yes
+                            #  "jpefbjss",# BEN not for the past few months
+                             "jpeiglsp"), #EMBI Yes
+                     iso3c=c(c("AGO", "GHA", "KEN","NGA","SEN", "ZAF", "CIV",
+                               "GAB", "MOZ", "NAM","EMBI")
+                     ))#EMBI Yes
+                             
+data %>% tail(10)
+
+spreads.data<-data %>% 
+  rowwise() %>% 
+  mutate(SSAx=median(c(jpssgsaf,jpssgcdi,jpssgnig,jpssgga,jpssgaob,jpssgsn,jpssgdgh, jpgckess,  jpssgmzb, jpssgnmb), na.rm=T))  %>% 
+  select(date, SSAx, jpeiglsp, jpgckess) %>% 
+  rename(EMBI.Global=3) %>% 
+  filter(date>=as.Date("2018-06-30"))
+spreads.data %>% tail(5)
+plot.data<-spreads.data %>%
+  filter(date>=as.Date("2021-9-1")-1) %>%
+  mutate(gap=SSAx-EMBI.Global) %>% 
+  ungroup()
+max.data<-plot.data %>% 
+  ungroup() %>% 
+  filter(gap==max(gap))
+
+lastobs<-plot.data %>% slice(n()) %>% pull(date) %>% format("%d %b %Y")
+crazy1<-ggplot(plot.data)+ 
+   geom_ribbon(aes(date, ymin=EMBI.Global, ymax=SSAx), fill=ssagrey1, alpha=.3)+
+   geom_line(aes(date, SSAx), col=fundblue, size=1)+
+   geom_line(aes(date, EMBI.Global), col=ssagrey3, size=1)+
+  geom_segment(aes(x=date, xend=date, y=EMBI.Global+20, yend=SSAx-50), data=. %>% slice(1),
+               arrow =  arrow(ends = "both",length=unit(0.01, "npc"),type="closed"),col="grey30")+
+    annotate("text", x=min(plot.data$date)+80, y=400, 
+             label=sprintf("%3.0f", first(plot.data$gap)), col="grey30", fontface="bold", size=6/.pt)+
+  geom_segment(aes(x=date, xend=date, y=EMBI.Global+50, yend=SSAx-70), data=max.data,
+               arrow =  arrow(ends = "both",length=unit(0.01, "npc"),type="closed"),col="grey30")+
+    annotate("text", x=max.data$date+80, y=700, 
+             label=sprintf("%3.0f", max.data$gap), col="grey30", fontface="bold", size=6/.pt)+
+  geom_segment(aes(x=date, xend=date, y=EMBI.Global+50, yend=SSAx-50),
+               data=. %>% slice(n()),
+               arrow =  arrow(ends = "both",length=unit(0.01, "npc"),type="closed"),col="grey30")+
+    annotate("text", x=max(plot.data$date)+80, y=300, 
+             label=sprintf("%3.0f", last(plot.data$gap)), col="grey30", fontface="bold", size=6/.pt)+
+   scale_x_date(breaks=seq(as.Date("2022-1-1"), Sys.Date(), by="6 months")-1,
+                date_labels = "%b\n%Y")+
+  labs(title = "Sub-Saharan Africa. Sovereign Spreads",
+       subtitle = "(bps)",
+       caption=paste0(str_wrap("Note: Sample includes ZAF, CIV, NGA, GAB, AGO, KEN, MOZ, NAM, GHA", 75)))+
+  annotate("text", x=as.Date("2023-7-30"), y=450, label="EMBIG", size=6/.pt, col=ssagrey4)+
+  annotate("text", x=as.Date("2023-7-30"), y=900, label="SSA Median", size=6/.pt, col=fundblue, hjust=0)
+crazy1
+###### Spreads rate panel
+
+panel.data<-data %>% 
+  # filter(date>=as.Date("2025-4-2")) %>% 
+  filter(date>=as.Date("2025-12-31")) %>% 
+  # filter(date>=as.Date("2024-12-31")& date<=as.Date("2025-4-30")) %>% 
+  slice(1,n())%>% 
+  pivot_longer(2:12, names_to = "index", values_to = "value") %>% 
+  left_join(plotlist) %>% 
+  select(date, iso3c, value) %>% 
+  pivot_wider(names_from = date, values_from = value) %>% 
+  rename(then=2, now=3) %>% 
+  mutate(diff=now-then) %>% 
+  mutate(country=countrycode(iso3c, "iso3c", "country.name")) %>% 
+  filter(iso3c!="EMBI")
+
+crazy2<-ggplot(panel.data)+
+  geom_segment(aes(y=fct_reorder(country,diff), yend=country, x=0, xend = diff), color=fundblue)+
+  geom_point(aes(x=diff, y=country), shape="|", size=4, col=fundblue)+
+  geom_vline(aes(xintercept=0), lty=2, size=.5, col=ssagrey4)+
+  labs(title = "Change in Sovereign Spreads since Dec 31st, 2025",
+       subtitle = "(bps)")
+
+crazy2
+
+weights.trade<-idata.basic(c("NGDPD","BXGS_GDP_BP6", "BMGS_GDP_BP6"), ssa.list, "IMF.RES.WEO:WEO_LIVE", "2024", "2024", "A")%>% 
+  mutate(importd=bmgs_gdp_bp6*ngdpd,
+         exportd=bxgs_gdp_bp6*ngdpd) %>% 
+  mutate(w=exportd+importd) %>% 
+  select(iso3c, w)
+
+weights.ppp<-idata.basic(c("PPPGDP"),ssa.list,  "IMF.RES.WEO:WEO_LIVE", "2024", "2024", "A")%>% 
+  rename(w=3) %>% 
+  select(iso3c, w)
+weights<-weights.trade
+
+weights %>% arrange(desc(w)) %>% 
+  mutate(total=sum(w, na.rm=T)) %>% 
+  mutate(w=w/total*100) %>% 
+  select(iso3c, w) %>% 
+  head(10)%>% ggplot(aes(w, fct_reorder(iso3c, w)))+geom_bar(stat="identity")
+
+series.list<-c(
+  "USDAOA_CURNCY", # Angola
+  "USDXOF_CURNCY", # Cote DIvoire (WAEMU)
+  "USDETB_CURNCY", # Ethiopia
+  "USDXAF_CURNCY", # Cameroon (CEMAC)
+  "USDGHS_CURNCY", # Ghana
+  "USDKES_CURNCY", # Kenya
+  "USDMUR_CURNCY", # Mauritius
+  "USDMZN_CURNCY", # Mozambique
+  "USDNGN_CURNCY", # Nigeria
+  "RWF_BNRW_CURNCY", # Rwanda
+  "USDZAR_CURNCY", # South Africa
+  "USDTZS_CURNCY", # Tanzania
+  "USDUGX_CURNCY", # Uganda
+  "USDZMW_CURNCY", # Zambia
+  "USDBWP_CURNCY", # Botswana
+  "USDBIF_CURNCY", # Burundi
+  "USDCVE_CURNCY", # Cape Verde
+  "USDKMF_CURNCY", # Comoros
+  "USDCDF_CURNCY", # DR Congo
+  "USDERN_CURNCY", # Eritrea
+  "USDSZL_CURNCY", # Eswatini
+  "USDGMD_CURNCY", # Gambia
+  "USDGNF_CURNCY", # Guinea
+  "USDLSL_CURNCY", # Lesotho
+  "USDLRD_CURNCY", # Liberia
+  "USDMGA_CURNCY", # Madagascar
+  "USDMWK_CURNCY", # Malawi
+  "USDNAD_CURNCY", # Namibia
+  "USDSTN_CURNCY", # Sao Tome and Principe
+  "USDSCR_CURNCY", # Seychelles
+  "USDSLL_CURNCY", # Sierra Leone
+  "USDZWL_CURNCY") # Zimbabwe
+
+
+raw = bbiextract(series.list, "PX_LAST","2021-09-1", as.character(Sys.Date()), "D")
+raw %>% tail()
+weights.ppp<-idata.basic(c("PPPGDP"),ssa.list,  "IMF.RES.WEO:WEO_LIVE", "2024", "2024", "A")%>% 
+  rename(w=3) %>% 
+  select(iso3c, w)
+weights<-weights.trade
+data.bbg<-raw %>%  
+  tidyr::fill(everything()) %>% 
+  filter(date<=cutoff.date)
+names(data.bbg)
+names<-c("RWA", "AGO", "BDI", "BWA", "COD",
+         "CPV", "ERI", "ETH", "GHA", "GMB",
+         "GIN", "KEN", "COM", "LBR", "LSO",
+         "MDG", "MUS", "MWI", "MOZ", "NAM",
+         "NGA", "SYC", "SLE", "STP", "SWZ",
+         "TZA", "UGA", "GAB", "CIV", "ZAF",
+         "ZMB", "ZWE" )
+countrycode(names, "iso3c", "country.name")
+names(data.bbg)<-c("date", names)
+
+base.date<-as.Date("2023-12-28")
+
+plot.data<-data.bbg %>% 
+  mutate(BEN=CIV, #WAEMU countries
+         BFA=CIV,
+         GNB=CIV,
+         MLI=CIV,
+         NER=CIV,
+         SEN=CIV,
+         TGO=CIV) %>% 
+  mutate(CMR=GAB, #CEMAC countries
+         CAF=GAB,
+         TCD=GAB,
+         COG=GAB,
+         GNQ=GAB)%>% 
+  pivot_longer(2:45, names_to = "iso3c", values_to = "er") %>% 
+  group_by(iso3c)%>% 
+  arrange(iso3c,date)%>% 
+  # mutate(base=mean(ifelse(date=="2021-09-1",er,NA), na.rm=T)) %>%
+  mutate(base=mean(ifelse(date==base.date,er,NA), na.rm=T))  %>%
+  mutate(index=base/er*100) %>% 
+  mutate(area=case_when(
+    iso3c%in%WAEMU~"WAEMU",
+    iso3c%in%CEMAC~"CEMAC",
+    TRUE~"other"
+  ))
+
+
+
+line.data.all<-plot.data %>% 
+  ungroup() %>% 
+  left_join(weights) %>% 
+  na.omit() %>% #for ERI
+  group_by(date)%>% 
+  # filter(date%in%plotdates)%>%
+  # filter(date>=as.Date("2021-9-1"))%>%
+  summarize(mean=weighted.mean(index, w, na.rm=T))
+
+eurodata = bbiextract("USDEUR_CURNCY", "PX_LAST","2021-09-1", as.character(Sys.Date()), "D") |> 
+  fill(everything()) %>% 
+  janitor::clean_names() %>% 
+  mutate(base=mean(ifelse(date==base.date,usdeur,NA), na.rm=T))%>%
+  # mutate(base=mean(ifelse(date=="2019-12-31",er,NA), na.rm=T)) %>%
+  mutate(indexeur=base/usdeur*100)
+
+line.data.all.eur<-line.data.all %>% 
+  left_join(eurodata) %>% 
+  mutate(meaneur=mean/indexeur*100)
+line.data.all.eur %>% tail()
+
+crazy3<-ggplot(line.data.all.eur %>% filter(date>=base.date & date<as.Date(Sys.Date())))+
+  geom_ribbon(aes(date, ymin=mean, ymax=100), fill=ssagrey3, alpha=.5)+
+  geom_line(aes(date, mean), col=ssagrey3, size=1)+
+  geom_ribbon(aes(date, ymin=meaneur, ymax=100), fill=fundblue, alpha=.3)+
+  geom_line(aes(date, meaneur), col=fundblue, size=1)+
+  geom_hline(aes(yintercept=100), lty=2, col="grey30")+
+  geom_point(aes(date, mean), size=3, col=ssagrey3, data=. %>% slice(n()))+
+  geom_point(aes(date, meaneur), size=3, col=fundblue, data=. %>% slice(n()))+
+  scale_x_date(breaks=seq(base.date, as.Date(Sys.Date()), by="3 months")-1,
+               date_labels = "%b\n%Y")+
+  # geom_vline(aes(xintercept=as.Date("2024-11-04")), lty=2, size=.5, color="firebrick")+
+  geom_vline(aes(xintercept=as.Date("2025-03-04")), lty=2, size=.5, color="firebrick")+
+  geom_vline(aes(xintercept=as.Date("2025-04-03")), lty=2, size=.5, color="firebrick")+
+  annotate("text", x=as.Date("2025-3-1")-5, y=102, label = "US Tariffs\nAnnouncement\nMarch", size=6/.pt, col="firebrick", hjust=1)+
+  annotate("text", x=as.Date("2025-4-4")+5, y=102, label = "April\n2", size=6/.pt, col="firebrick", hjust=0)+
+  annotate("text", x=as.Date("2024-9-1"), y=89, label = "vs EUR", size=6/.pt, col=fundblue)+
+  annotate("text", x=as.Date("2024-3-11"), y=90, label = "vs USD", size=6/.pt, col=ssagrey4)+
+  labs(title = str_wrap(glue::glue("Sub-Saharan Africa: Exchange Rates, ",year(base.date)," - ",year(as.Date(Sys.Date()))),75),
+       subtitle = glue::glue("(Trade weighted index, ",format(base.date, "%b %d %Y")," = 100)"))+
+  coord_cartesian(ylim=c(87,103), xlim=c(base.date, as.Date(Sys.Date())))
+# start<-as.Date("2025-4-2")
+start<-as.Date("2025-12-31")
+end<-max(data.bbg$date)
+er.plot<-data.bbg %>% 
+  filter(date>=as.Date(start)) %>% 
+  filter(date!=as.Date(Sys.Date()))%>% 
+  pivot_longer(-date, names_to = "iso3c", values_to = "value") %>%  
+  arrange(iso3c, date) %>% 
+  group_by(iso3c)%>% 
+  mutate(base=sum(ifelse(date==as.Date(start),value,0)))%>% 
+  mutate(change=100*base/value-100) %>% 
+  # mutate(year=nth(change, -365))%>% 
+  mutate(latest=last(change)) %>% 
+  mutate(end=sum(ifelse(date==as.Date(end),change,0)))%>% 
+  slice(n())%>% 
+  mutate(country=countrycode(iso3c, "iso3c", "country.name"))%>% 
+  filter(!country%in%c("Gabon"))%>%
+  mutate(country=ifelse(iso3c%in%c(WAEMU, CEMAC),"WAEMU/CEMAC", country)) %>% 
+  mutate(country=ifelse(country=="South Africa","South Africa", country))%>% 
+  na.omit()
+
+
+
+last.date.er<-er.plot %>% pull(date) %>% max() %>% format("%d %b %Y")
+
+crazy4<-ggplot(er.plot)+
+  geom_segment(aes(x=0, xend=latest, y=fct_reorder(country, latest), yend=country, col=(iso3c%in%ssa.list)), size=1, alpha=.7)+
+    # geom_point(aes(max,country), size=8, col="grey70", shape="|")+
+    # geom_point(aes(min,country), size=8, col="grey70", shape="|")+
+    # geom_point(aes(latest,country, col=(iso3c%in%SSAlist)), size=2)+
+    geom_point(aes(latest,country,col=(iso3c%in%ssa.list)), size=4, shape="|")+
+    geom_vline(aes(xintercept = 0), lty=2, col="grey30")+
+  scale_color_manual(values=c(fundblue, fundblue), guide="none")+
+    labs(title = str_wrap("Exchange Rate, Change since Dec 31st, 2025", 45),
+         subtitle = paste0("(percent, as of ",last.date.er,")"))+
+    theme(plot.title.position = "plot",
+          plot.caption = element_text(hjust=0),
+          panel.grid.major.x = element_line(color="grey90", linetype=2),
+          panel.grid.major.y = element_line(color="grey90", linetype=2, size=.5))
+
+crazy4
+
+# Oil price chart  --------------------------------------------------------
+comm.list<-c("CL1_COMDTY")
+raw.comm = bbiextract(comm.list, "PX_LAST", "1999-12-31", as.character(Sys.Date()), "D")
+raw.comm %>% tail()
+gaswti<-idata.basic("PZPIOIL_Type3", "G001", "IMF.RES.GAS:GAS_LIVE", "2026", "2026", "Q")%>% 
+  mutate(date=date+months(3)-1) %>% 
+  slice(n()) %>% pull(pzpioil_type3) #code for WTI
+comm.data<-raw.comm %>% 
+  fill(everything()) %>% 
+  filter(date!=Sys.Date()) %>% 
+  rename(date=1, Oil=`cl1`) %>%
+  select(date, Oil) 
+  # %>% 
+  # rbind(c(as.Date(Sys.Date()), oilprice)) # tweak to add the latest oil price for today
+lastobs<-max(comm.data$date)%>% format("%b %d, %Y")
+
+
+comm.plot<-function(cdty, D, startdate, period, color){
+  # cdty="Oil"
+  # D=comm.data
+  D %>% select(date, cdty)%>% 
+    filter(date>=startdate) %>% 
+    ggplot()+
+    geom_vline(aes(xintercept=as.Date("2025-4-1")), lty=2, size=.5, col="firebrick")+
+    annotate("text", x=as.Date("2025-4-1"), y=85, label="April 2", col="firebrick", size=6/.pt, hjust=1.3)+
+    geom_line(aes(date,!!sym(cdty)), col=color, size=.8)+
+    geom_point(aes(date, !!sym(cdty)), col="firebrick", size=3, data = . %>% slice(n()))+
+    # annotate("rect", xmin=as.Date(Sys.Date())-weeks(1), xmax = as.Date (Sys.Date()),
+    #          ymin=-Inf, ymax = Inf, fill="grey40", alpha=.3)+
+    scale_x_date(breaks=seq(as.Date(startdate), Sys.Date(), by=period)-1,
+                 # date_labels = "%b")+
+                 date_labels = "%b\n%Y")+
+    labs(title=cdty)->g
+  return(g)
+}
+
+crazy5<-comm.plot("Oil", D=comm.data, startdate="2023-12-31", period="3 months", color=ssagrey4)+
+    geom_hline(aes(yintercept=gaswti), lty=2, size=.5, col=fundblue)+
+  annotate("rect", xmin = as.Date("2023-12-31"), xmax=max(comm.data$date), ymin=gaswti/1.1, ymax=gaswti*1.1, fill=ssablue, alpha=.1)+
+    annotate("text", x=as.Date("2024-9-1"), y=gaswti-2, label="End-2026 GAS\nplus/minus 10%", col=fundblue, size=6/.pt, hjust=.5)+
+  labs(title = str_wrap("Oil Price, 2023-25",50),
+       subtitle = paste0("(USD/barrel, as of ", lastobs,")"))
+
+```
+
+```{r}
+#| label: Page 2 Charts
+#| echo: false
+#| output: false
+
+db='IMF.CSF:BBGDL'
+series.list<-c("VIX_INDEX", "USGG10YR_INDEX", "^TNX_INDEX")
+# series<-imf_datatools$idata_utilities$get_dimension_values(db, "TICKER") |> rownames_to_column("code")
+raw = bbiextract(series.list,"PX_LAST", "2015-12-31", as.character(Sys.Date()) , "D")
+raw %>% tail()
+data<-raw %>% 
+  rename(date=1, VIX=3, UST=2) %>% 
+  tidyr::fill(everything()) %>% 
+  filter(date>=as.Date("2022-12-31"))%>% 
+  pivot_longer(2:3,names_to = "var", values_to = "value") %>% 
+  group_by(var) 
+# %>% 
+#   mutate(mean=ifelse(date<=as.Date("2019-12-31"), mean(value),NA))
+  
+gas<-idata.basic("FIGB", "USA", "IMF.RES.GAS:GAS_LIVE", "2026", "2026", "Q") %>% 
+  mutate(date=date+months(3)-1) %>% 
+  slice(n()) %>% pull(figb)
+
+g.ust<-ggplot(data %>% filter(var=="UST"))+
+  geom_line(aes(date, value), size=1, col=ssagrey3)+
+  geom_point(aes(date, value), size=3, col="firebrick", data=. %>% slice(n()))+
+  geom_vline(aes(xintercept=as.Date("2025-4-2")), lty=2, size=.5, col="firebrick")+
+  geom_hline((aes(yintercept=gas)), data=. %>% slice(n()), size=.4, col=fundblue, lty=2)+
+  geom_text((aes(date, y=gas, label="End\n2026\nGAS")), data=. %>% slice(n()), hjust=1, vjust=1.1, col=fundblue, size=6/.pt)+
+  annotate("text", x=as.Date("2025-4-1"), y=4.9, label="April 2", hjust=1.2, col="firebrick", size=6/.pt)+
+  scale_x_date(breaks=seq(as.Date("2019-1-1"), as.Date(Sys.Date()), by="6 months")-1,
+               date_labels = "%b\n%Y")+
+  labs(title = "US 10 year Yield (percent)")
+g.ust
+g.vix<-ggplot(data %>% filter(var=="VIX"))+geom_line(aes(date, value), size=1, col=ssagrey3)+
+  annotate("rect", xmin=min(data$date), xmax=max(data$date), ymin=25, ymax=30, fill="firebrick", alpha=.1)+
+  annotate("rect", xmin=min(data$date), xmax=max(data$date), ymin=30, ymax=35, fill="firebrick", alpha=.2)+
+  annotate("rect", xmin=min(data$date), xmax=max(data$date), ymin=35, ymax=Inf, fill="firebrick", alpha=.4)+
+  geom_vline(aes(xintercept=as.Date("2025-4-2")), lty=2, size=.7, col="firebrick")+
+  annotate("text", x=as.Date("2025-4-1")-2, y=10, label="April 2", hjust=1, col="firebrick", size=6/.pt)+
+  annotate("text", x=as.Date("2023-6-1"), y=32.5, label="Market\nStress", hjust=0, col="firebrick", size=6/.pt)+
+  annotate("segment", x=as.Date("2023-5-1"), xend=as.Date("2023-5-1"),  y=26, yend=40, col="firebrick", size=1, arrow=arrow(length=unit(.15, "cm")))+
+  scale_x_date(breaks=seq(as.Date("2019-1-1"), as.Date(Sys.Date()), by="6 months")-1,
+               date_labels = "%b\n%Y")+
+  labs(title = "VIX (Index)")
+##----Yields--------------------------------------------------------------------------------------------------------------
+
+series.list<-c(
+  "JPSYGAFR_INDEX", #Africa
+"JPSYGCDI_INDEX", # CIV
+"JPSYGAOB_INDEX", #AGO
+"JPSYGMZB_INDEX", #MOZ
+"JPSYGSN_INDEX", #SEN
+"JPSYGZMB_INDEX", #ZMB
+"JPSYGGA_INDEX", #GAB
+"JPSYGGH_INDEX", # GHA
+"JPSYGNIG_INDEX", # NGA
+"JPSYGSAF_INDEX",# ZAF
+"JPEGKEYW_INDEX",# KEN yield to worst
+"JPGCETYW_INDEX") # ETH Diversified to worst
+
+
+raw = bbiextract(series.list, "PX_LAST",  "2019-01-1", as.character(Sys.Date()) , "D")
+raw %>% tail()
+
+
+data<-raw %>%  
+  tidyr::fill(everything()) %>% 
+  purrr::set_names(nm=str_trim(tolower(names(raw))))
+data %>% tail()
+# %>% 
+  # filter(date<=cutoff.date)
+plot.list<-series.list %>%
+  str_sub(1,-7) %>%
+  tolower() %>% 
+  data.frame() %>% 
+  mutate(iso3c=c("AFR", "CIV", "AGO", "MOZ", "SEN", "ZMB", "GAB", "GHA", "NGA", "ZAF", "KEN", "ETH")) %>% 
+  rename(index=1)
+plot.list
+
+plot.data<-data %>% 
+  rowwise() %>% 
+  mutate(SSA=median(c(jpsygaob, jpsygcdi, jpsygga, jpsyggh, jpsygmzb, jpsygnig ,jpsygsaf, jpsygsn), na.rm=T)) |> 
+  select(date, SSA) %>% #exclude Zambia and Ghana
+  filter(date>=as.Date("2018-06-30"))
+
+
+lastobs<-plot.data %>% slice(n()) %>% pull(date) %>% format("%d %b %Y")
+lastlevel<-plot.data %>%ungroup() %>%  slice(n()) %>% pull(SSA)
+
+
+g.yields<-ggplot(plot.data %>% filter(date>=as.Date("2022-12-31")))+ 
+  geom_area(aes(date, y=SSA), fill=fundblue, alpha=.3)+
+   geom_line(aes(date, SSA), col=fundblue, size=1)+
+   geom_point(aes(date, SSA), col="firebrick", size=3, data =. %>% ungroup() %>% slice(n()))+
+  coord_cartesian(ylim=c(6,14))+
+  scale_x_date(breaks=seq(as.Date("2015-1-1"), as.Date(Sys.Date()), by="6 months")-1,
+               date_labels = "%b\n%Y")+
+  labs(title = "Sub-Saharan Africa. Sovereign Yields",
+       subtitle = "(percent)",
+       caption=paste0("Source: Bloomberg LLC", "\n", str_wrap("Note: Sample includes ZAF, CIV, NGA, GAB, AGO, KEN, MOZ, GHA, ZAM, ETH", 50)))+
+  annotate("text", x=as.Date("2024-6-30"), y=12.5, label="SSA Median", size=2.5, col=fundblue, hjust=0)
+g.yields$data
+ggsave(filename = "yields.png",  height = 4, width=4, dpi=1000,units="in", device="png", bg = "transparent")
+
+
+panel.data<-data %>% 
+  # filter(date>=as.Date("2024-4-2")) %>% 
+  filter(date>=as.Date("2025-1-6")& date<=as.Date("2025-4-12")) %>% 
+  slice(1,n())%>% 
+  pivot_longer(2:13, names_to = "index", values_to = "value") %>% 
+  left_join(plot.list)%>% 
+  select(date, iso3c, value)%>% 
+  pivot_wider(names_from = date, values_from = value) %>% 
+  rename(then=2, now=3) %>% 
+  mutate(diff=now-then) %>% 
+  mutate(country=countrycode(iso3c, "iso3c", "country.name")) %>% 
+  filter(iso3c!="AFR")
+
+g.yieldpanel<-ggplot(panel.data)+
+  geom_segment(aes(y=fct_reorder(iso3c,diff), yend=iso3c, x=0, xend = diff), color=fundblue)+
+  geom_point(aes(x=diff, y=iso3c), shape="|", size=4, col=fundblue)+
+  geom_vline(aes(xintercept=0), lty=2, size=.5, col=ssagrey4)+
+  labs(title = "Change in Sovereign Yields Jan 6 to April 12, 2025",
+       subtitle = "(bps)")
+
+g.yieldpanel
+  
+# Commodity prices --------------------------------------------------------
+comm.list<-c("GC1_COMDTY",
+             # "NG1_COMDTY",
+             # "W 1_COMDTY",
+             # "RR1_COMDTY",
+             # "GC1_COMDTY",
+             # "CL1_COMDTY",
+             # "PA1_COMDTY",
+             "LOCADS03_COMDTY",
+             "HG1_COMDTY",
+             # "C 1_COMDTY",
+             "SF1_COMDTY",
+             "KC1_COMDTY",
+             "CC1_COMDTY")
+             # "S 1_COMDTY",
+             # "SB1_COMDTY")
+raw.comm = bbiextract(comm.list, "PX_LAST",  "1999-12-31", as.character(Sys.Date()) , "D")
+raw.comm %>% tail()
+
+comm.data<-raw.comm %>% 
+  fill(everything()) %>% 
+  filter(date!=Sys.Date()) %>% 
+  rename(date=1, Gold=`gc1`, Copper=`hg1`, Coffee=`sf1`, Cocoa=`cc1`) %>%
+  select(date, Gold, Copper, Coffee, Cocoa)
+# , Wheat=`W 1 Comd`, Copper=`HG1 Comd`,
+#          Corn=`C 1 Comd`, Gas=`NG1 Comd`, Gold=`GC1 Comd`, Rice=`RR1 Comd`,
+#          Soybean=`S 1 Comd`, Sugar=`SB1 Comd`, Coffee=`DF1 Comd`, Cocoa=`QC1 Comd`)%>% 
+  # select(date, Oil, Gas, Soybean, Wheat, Rice, Corn, Sugar, Gold, Copper)
+
+lastobs<-max(comm.data$date)%>% format("%b %d, %Y")
+comm.data %>% filter(Gold==max(Gold, na.rm=T)) %>% kbl("rst")
+comm.data %>% tail() %>% kbl("rst")
+
+# Function to plot data ---------------------------------------------------
+
+
+
+comm.plot<-function(cdty, D, startdate, period, color){
+  # cdty="Oil"
+  # D=comm.data
+  D %>% select(date, cdty)%>% 
+    filter(date>=startdate) %>% 
+    ggplot()+
+    geom_line(aes(date,!!sym(cdty)), col=color, size=.8)+
+    geom_point(aes(date, !!sym(cdty)), col="firebrick", size=3, data = . %>% slice(n()))+
+    # annotate("rect", xmin=as.Date(Sys.Date())-weeks(1), xmax = as.Date (Sys.Date()),
+    #          ymin=-Inf, ymax = Inf, fill="grey40", alpha=.3)+
+    scale_x_date(breaks=seq(as.Date(startdate), Sys.Date(), by=period)-1,
+                 # date_labels = "%b")+
+                 date_labels = "%b\n%Y")+
+    labs(title=cdty)->g
+  return(g)
+}
+
+# Plot Commodities------------------------------------------------
+
+g.gld<-comm.plot("Gold", D=comm.data, startdate="2022-12-31", period="6 months", color=fundblue)+
+  geom_vline(aes(xintercept=as.Date("2025-4-1")), lty=2, size=.5, col="firebrick")+
+    annotate("text", x=as.Date("2025-4-1"), y=2500, label="April 2", col="firebrick", size=6/.pt, hjust=1.3)+
+  labs(title = str_wrap("Gold Price, 2022-25",50),
+       subtitle = paste0("(USD per oz, as of ", lastobs," )"))
+g.cu<-comm.plot("Copper", D=comm.data, startdate="2022-12-31", period="6 months", color="skyblue2")+
+  geom_vline(aes(xintercept=as.Date("2025-4-1")), lty=2, size=.5, col="firebrick")+
+    annotate("text", x=as.Date("2025-4-1"), y=360, label="April 2", col="firebrick", size=6/.pt, hjust=1.3)+
+  labs(title = str_wrap("Copper Price, 2022-25",50),
+       subtitle = paste0("(USD per 100 lb, as of ", lastobs," )"))
+g.cof<-comm.plot("Coffee", D=comm.data, startdate="2022-12-31", period="6 months", color=ssapeach5)+
+  geom_vline(aes(xintercept=as.Date("2025-4-1")), lty=2, size=.5, col="firebrick")+
+    annotate("text", x=as.Date("2025-4-1"), y=45, label="April 2", col="firebrick", size=6/.pt, hjust=1.3)+
+  labs(title = str_wrap("Coffee Price, 2022-25",50),
+       subtitle = paste0("(USD per 10 lb, as of ", lastobs," )"))
+g.coc<-comm.plot("Cocoa", D=comm.data, startdate="2022-12-31", period="6 months", color=ssagrey3)+
+  geom_vline(aes(xintercept=as.Date("2025-4-1")), lty=2, size=.5, col="firebrick")+
+    annotate("text", x=as.Date("2025-4-1"), y=6000, label="April 2", col="firebrick", size=6/.pt, hjust=1.3)+
+  labs(title = str_wrap("Cocoa Price, 2022-25",50),
+       subtitle = paste0("(USD per MT, as of ", lastobs," )"))
+  
+g.gld$data %>% tail(20)
+```
+
+```{r page1}
+#| echo: false
+#| fig-width: 7 
+#| fig-height: 8.5
+crazy2+crazy1+crazy4+crazy3+crazy5+plot_layout(design = "
+                                        12
+                                        34
+                                        35")+
+  plot_annotation(caption = "Sources: Bloomberg, LLC, and IMF staff calculations")
+# ggsave(filename = "page1.png",  height = 9, width=6, dpi=600,units="in", device="png", bg = "transparent")
+```
+
+```{r page2}
+#| echo: false
+#| fig-width: 7 
+#| fig-height: 8.5
+g.ust+g.yields+g.gld+g.cu+g.cof+ g.coc+plot_layout(design = "
+                                        12
+                                        34
+                                        56")+
+  plot_annotation(caption = "Sources: Bloomberg, LLC, and IMF staff calculations")
+```

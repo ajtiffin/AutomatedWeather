@@ -107,6 +107,7 @@ extract_key_points <- function(chunk, topic) {
 
 query_gemini <- function(
   prompt,
+  # model = "gemini-2.5-flash",
   model = "gemini-3-flash-preview",
   max_tokens = 8192
 ) {
@@ -240,19 +241,19 @@ para1_prompt <- paste0(
 )
 
 cat("Generating paragraph 1 (Monetary Policy, Inflation & Debt)...\n")
-para1 <- query_gemini(para1_prompt, model = "gemini-3-flash-preview")
+para1 <- query_gemini(para1_prompt, model = "gemini-2.5-flash")
 para1 <- trimws(para1)
 
 # Generate headline for paragraph 1
 headline1 <- query_gemini(
   paste0(
-    "Write a punchy, witty headline (maximum 10 words) for this paragraph, ",
-    "in the style of The Economist magazine. The headline should capture the ",
+    "Write a brief, punchy, headline (maximum 10 words) for this paragraph, ",
+    "in the style of The Financial Times. The headline should capture the ",
     "key theme with clever wordplay or a sharp observation. No quotation marks. ",
     "No markdown. Just the headline:\n\n",
     para1
   ),
-  model = "gemini-3-flash-preview"
+  model = "gemini-2.5-flash"
 )
 headline1 <- trimws(gsub("[\r\n]", "", headline1))
 headline1 <- gsub("\\*+$", "", headline1)
@@ -285,19 +286,19 @@ para2_prompt <- paste0(
 )
 
 cat("Generating paragraph 2 (Currency & Commodities)...\n")
-para2 <- query_gemini(para2_prompt, model = "gemini-3-flash-preview")
+para2 <- query_gemini(para2_prompt, model = "gemini-2.5-flash")
 para2 <- trimws(para2)
 
 # Generate headline for paragraph 2
 headline2 <- query_gemini(
   paste0(
-    "Write a punchy, witty headline (maximum 10 words) for this paragraph, ",
-    "in the style of The Economist magazine. The headline should capture the ",
+    "Write a brief, punchy headline (maximum 10 words) for this paragraph, ",
+    "in the style of The Financial Times. The headline should capture the ",
     "key theme with clever wordplay or a sharp observation. No quotation marks. ",
     "No markdown. Just the headline:\n\n",
     para2
   ),
-  model = "gemini-3-flash-preview"
+  model = "gemini-2.5-flash"
 )
 headline2 <- trimws(gsub("[\r\n]", "", headline2))
 headline2 <- gsub("\\*+$", "", headline2)
@@ -308,33 +309,15 @@ capital_prompt <- paste0(
   "You are a senior economist at the International Monetary Fund. Today's date is ",
   format(Sys.Date(), "%B %d, %Y"),
   ".\n\n",
-  "Based on the key facts below, provide a brief factual summary (1-2 sentences, ",
-  "maximum 25 words) on portfolio capital flows into sub-Saharan Africa.\n\n",
-  "Guidelines:\n",
-  "- Focus on any mentions of bond issuances, investor flows, or financing deals\n",
-  "- If specific SSA capital flow data is limited, report on broader EM flows or financing news\n",
-  "- Factual and terse - no speculation or meta-commentary\n",
-  "- Do NOT mention sources\n\n",
-  "KEY FACTS FROM NEWS:\n",
-  capital_summary
+  "Based on the key facts below, provide a brief factual summary (1 sentence, 10 words, max) ",
+  " on EPFR portfolio capital flows into sub-Saharan Africa int he past week, based on the following data. The most rcent week will be the last observation.\n\n",
+  "KEY DATA on sub-Saharan African Flows:\n",
+  cap.context
 )
 
 cat("Generating capital flows summary...\n")
-capital <- query_gemini(capital_prompt, model = "gemini-3-flash-preview")
-capital <- trimws(capital)
-
-# Generate headline for capital flows
-capital_sq <- query_gemini(
-  paste0(
-    "Write a punchy, witty headline (maximum 12 words) for this capital flows ",
-    "summary, in the style of The Economist magazine. The headline must refer ",
-    "to sub-Saharan Africa specifically. Use clever wordplay or a sharp observation. ",
-    "No quotation marks. No markdown. Just the headline:\n\n",
-    capital
-  ),
-  model = "gemini-3-flash-preview"
-)
-capital_sq <- trimws(gsub("[\r\n]", "", capital_sq))
+capital <- query_gemini(capital_prompt, model = "gemini-2.5-flash")
+capital_sq <- trimws(gsub("[\r\n]", "", capital))
 capital_sq <- gsub("\\*+$", "", capital_sq)
 
 # Output ----------------------------------------------------------------------
@@ -347,9 +330,6 @@ cat("\n===== PARAGRAPH 2: CURRENCY & COMMODITIES =====\n")
 cat("Headline:", headline2, "\n\n")
 cat(para2, "\n")
 
-cat("\n===== CAPITAL FLOWS =====\n")
-cat("Headline:", capital_sq, "\n\n")
-cat(capital, "\n")
 
 # Save for use in WeatherWiTs.qmd ---------------------------------------------
 
